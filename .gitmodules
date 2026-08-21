@@ -1,0 +1,3 @@
+[submodule "toolchain/spinel-src"]
+	path = toolchain/spinel-src
+	url = https://github.com/matz/spinel

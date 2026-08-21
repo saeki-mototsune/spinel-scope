@@ -1,0 +1,44 @@
+# Kamal deploy config template. Copy to config/deploy.yml (gitignored)
+# and fill in the placeholders for your environment.
+#
+# Rendered through ERB — SANDBOX_IMAGE pins the sandbox to the same git
+# SHA as the app image (clean-tree deploys are enforced by
+# .kamal/hooks/pre-deploy).
+service: spinel-visualize
+image: <GHCR_OWNER>/spinel-visualize
+
+servers:
+  web:
+    - <VPS_IP>
+
+proxy:
+  ssl: true
+  host: <APP_DOMAIN>
+  app_port: 9292
+  healthcheck:
+    path: /up
+
+registry:
+  server: ghcr.io
+  username: <GHCR_OWNER>
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  arch: amd64
+  context: "."
+  dockerfile: Dockerfile
+  target: app
+
+env:
+  clear:
+    RACK_ENV: production
+    TRUST_PROXY: "1"
+    SANDBOX_IMAGE: ghcr.io/<GHCR_OWNER>/spinel-sandbox:<%= `git rev-parse HEAD`.strip %>
+
+volumes:
+  - "/var/run/docker.sock:/var/run/docker.sock"
+
+# Non-root deploy user: must be in the docker group on the VPS.
+ssh:
+  user: ubuntu

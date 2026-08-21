@@ -1,0 +1,8 @@
+[
+  { "file": "fib.rb", "label": "fib(再帰と型推論)" },
+  { "file": "string_each.rb", "label": "String と each" },
+  { "file": "class_ivar.rb", "label": "class とインスタンス変数" },
+  { "file": "block_yield.rb", "label": "block / yield" },
+  { "file": "exception.rb", "label": "例外(raise / rescue)" },
+  { "file": "nihongo.rb", "label": "日本語文字列(バイト境界)" }
+]

@@ -1,0 +1,147 @@
+SPINEL-IR v1
+INT @nd_count 22
+INT @root_id 0
+INT @analysis_frozen 1
+INT @ieval_counter 0
+SA @meth_names 1 twice
+SA @meth_param_names 1 
+SA @meth_param_types 1 
+SA @meth_param_empty 1 
+SA @meth_return_types 1 int
+IA @meth_body_ids 1 3
+SA @meth_has_defaults 1 
+IA @meth_rest_index 1 -1
+IA @meth_has_yield 1 1
+SA @cls_names 1 Method
+SA @cls_parents 1 
+SA @cls_includes 1 
+SA @cls_ivar_names 1 @self_obj;@fn_ptr
+SA @cls_ivar_types 1 obj_Method;int
+SA @cls_ivar_init_definite 1 1;1
+SA @cls_ivar_observed_types 1 obj_Method;int
+SA @cls_meth_names 1 initialize
+SA @cls_meth_params 1 self_obj,fn_ptr
+SA @cls_meth_ptypes 1 obj_Method,int
+SA @cls_meth_returns 1 void
+SA @cls_meth_bodies 1 -2
+SA @cls_meth_defaults 1 0,0
+SA @cls_meth_ptypes_empty 1 
+SA @cls_attr_readers 1 
+SA @cls_attr_writers 1 
+SA @cls_cmeth_names 1 
+SA @cls_cmeth_params 1 
+SA @cls_cmeth_ptypes 1 
+SA @cls_cmeth_returns 1 
+SA @cls_cmeth_bodies 1 
+SA @cls_cmeth_defaults 1 
+SA @cls_cmeth_scope_names 1 
+SA @cls_cmeth_scope_types 1 
+IA @cls_is_value_type 1 0
+IA @cls_is_sra 1 0
+SA @cls_meth_has_yield 1 0
+SA @cls_method_adapters 0 
+SA @const_names 0 
+SA @const_types 0 
+IA @const_expr_ids 0 
+SA @const_scope_names 0 
+SA @cvar_names 0 
+SA @cvar_types 0 
+SA @cvar_init_values 0 
+SA @gvar_names 0 
+SA @gvar_types 0 
+SA @module_names 0 
+IA @module_body_ids 0 
+SA @module_acc_keys 0 
+SA @module_acc_consts 0 
+SA @ffi_modules 0 
+SA @ffi_module_libs 0 
+SA @ffi_module_cflags 0 
+SA @ffi_func_modules 0 
+SA @ffi_func_names 0 
+SA @ffi_func_arg_types 0 
+SA @ffi_func_ret_types 0 
+SA @ffi_func_arg_specs 0 
+SA @ffi_func_ret_specs 0 
+SA @ffi_buf_modules 0 
+SA @ffi_buf_names 0 
+IA @ffi_buf_sizes 0 
+SA @ffi_reader_modules 0 
+SA @ffi_reader_names 0 
+SA @ffi_reader_kinds 0 
+IA @ffi_reader_offsets 0 
+SA @regexp_patterns 0 
+SA @regexp_flags 0 
+IA @dyn_regex_node_ids 0 
+SA @dyn_regex_flags 0 
+SA @local_regex_names 0 
+IA @local_regex_idx 0 
+SA @open_class_names 0 
+SA @method_ref_vars 0 
+SA @method_ref_names 0 
+SA @galias_new 0 
+SA @galias_old 0 
+IA @undef_class_idx 0 
+SA @undef_method 0 
+SA @sym_names 0 
+SA @tuple_types 0 
+SA @poly_funcs 0 
+SA @poly_param_types 0 
+IA @ieval_class_idxs 0 
+IA @ieval_body_ids 0 
+IA @pre_execution_blocks 0 
+IA @post_execution_blocks 0 
+SA @toplevel_ivar_names 0 
+SA @toplevel_ivar_types 0 
+SA @lambda_var_ret_names 0 
+SA @lambda_var_ret_types 0 
+SA @multi_const_inits 0 
+INT @needs_gc 1
+INT @needs_system 0
+INT @needs_int_array 0
+INT @needs_float_array 0
+INT @needs_str_array 0
+INT @needs_str_int_hash 0
+INT @needs_str_str_hash 0
+INT @needs_int_str_hash 0
+INT @needs_sym_int_hash 0
+INT @needs_sym_str_hash 0
+INT @needs_sym_intern 0
+INT @needs_setjmp 0
+INT @needs_mutable_str 0
+INT @needs_rb_value 0
+INT @needs_regexp 0
+INT @needs_rand 0
+INT @needs_stringio 0
+INT @needs_lambda 0
+INT @needs_fiber 0
+INT @needs_bigint 0
+INT @needs_poly_array 0
+INT @needs_poly_poly_hash 0
+INT @needs_str_poly_hash 0
+INT @needs_sym_poly_hash 0
+INT @needs_ptr_array 0
+INT @needs_file_io 0
+STR @cls_cmeth_live 
+STR @cls_meth_live Method::initialize
+STR @meth_blk_param_types 
+STR @cls_cmeth_blk_param_types 
+T 3 int
+T 4 int
+T 5 int
+T 6 int
+T 7 int
+T 8 int
+T 9 int
+T 10 int
+T 11 int
+T 12 int
+T 13 int
+T 14 int
+T 15 int
+T 16 void
+T 17 int
+T 18 int
+T 20 int
+T 21 int
+SN 0 i
+ST 0 int

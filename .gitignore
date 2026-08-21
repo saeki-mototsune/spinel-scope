@@ -1,0 +1,26 @@
+# ローカル作業ファイル
+.superpowers/
+.ruby-lsp/
+
+# 環境固有のデプロイ設定(config/deploy.yml.example から作る)
+config/deploy.yml
+
+# 開発時の内部作業ログ(計画書・調査メモ)
+docs/
+
+# ビルド成果物(make -C toolchain で生成)
+web/wasm/
+
+# ビルド時に取得する外部ツール(README のセットアップ手順で clone する)
+# spinel 本体は toolchain/spinel-src にサブモジュールとして固定
+toolchain/emsdk/
+
+# 過去の技術検証(test/spike/)時の取得物。現在のビルドでは未使用
+toolchain/wasi-sdk/
+toolchain/clang-wasm/
+test/spike/work/
+
+# テスト実行時の生成物
+test/e2e/node_modules/
+test/e2e/test-results/
+test/e2e/playwright-report/

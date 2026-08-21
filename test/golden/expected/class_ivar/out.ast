@@ -1,0 +1,100 @@
+ROOT 0
+N 0 ProgramNode
+N 1 StatementsNode
+N 2 ClassNode
+N 3 ConstantReadNode
+S 3 name Counter
+R 2 constant_path 3
+R 2 superclass -1
+N 4 StatementsNode
+N 5 DefNode
+S 5 name initialize
+N 6 ParametersNode
+N 7 RequiredParameterNode
+S 7 name start
+A 6 requireds 7
+A 6 optionals 
+A 6 keywords 
+A 6 posts 
+R 5 parameters 6
+N 8 StatementsNode
+N 9 InstanceVariableWriteNode
+S 9 name @count
+N 10 LocalVariableReadNode
+S 10 name start
+R 9 value 10
+A 8 body 9
+R 5 body 8
+R 5 receiver -1
+N 11 DefNode
+S 11 name increment
+R 11 parameters -1
+N 12 StatementsNode
+N 13 InstanceVariableOperatorWriteNode
+S 13 name @count
+S 13 binary_operator +
+N 14 IntegerNode
+I 14 value 1
+R 13 value 14
+A 12 body 13
+R 11 body 12
+R 11 receiver -1
+N 15 DefNode
+S 15 name count
+R 15 parameters -1
+N 16 StatementsNode
+N 17 InstanceVariableReadNode
+S 17 name @count
+A 16 body 17
+R 15 body 16
+R 15 receiver -1
+A 4 body 5,11,15
+R 2 body 4
+N 18 LocalVariableWriteNode
+S 18 name c
+N 19 CallNode
+S 19 name new
+N 20 ConstantReadNode
+S 20 name Counter
+R 19 receiver 20
+N 21 ArgumentsNode
+N 22 IntegerNode
+I 22 value 10
+A 21 arguments 22
+R 19 arguments 21
+R 19 block -1
+R 18 value 19
+N 23 CallNode
+S 23 name times
+N 24 IntegerNode
+I 24 value 3
+R 23 receiver 24
+R 23 arguments -1
+N 25 BlockNode
+N 26 StatementsNode
+N 27 CallNode
+S 27 name increment
+N 28 LocalVariableReadNode
+S 28 name c
+R 27 receiver 28
+R 27 arguments -1
+R 27 block -1
+A 26 body 27
+R 25 body 26
+R 23 block 25
+N 29 CallNode
+S 29 name puts
+R 29 receiver -1
+N 30 ArgumentsNode
+N 31 CallNode
+S 31 name count
+N 32 LocalVariableReadNode
+S 32 name c
+R 31 receiver 32
+R 31 arguments -1
+R 31 block -1
+A 30 arguments 31
+R 29 arguments 30
+R 29 block -1
+A 1 body 2,18,23,29
+R 0 statements 1

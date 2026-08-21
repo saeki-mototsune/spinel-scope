@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>spinel visualize</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="app-head">
+  <span class="logo">spinel visualize</span>
+  <select id="sample-select" aria-label="サンプル選択"></select>
+  <button id="run-btn" class="run">▶ Compile &amp; Run</button>
+  <span class="spacer"></span>
+  <span class="hint">⌘/Ctrl+Enter で実行</span>
+</header>
+
+<div id="stagebar">
+  <span class="stage-chip" data-stage="parse" data-state="idle">parse <span class="stage-ms"></span></span>
+  <span class="arrow">→</span>
+  <span class="stage-chip" data-stage="analyze" data-state="idle">analyze <span class="stage-ms"></span></span>
+  <span class="arrow">→</span>
+  <span class="stage-chip" data-stage="codegen" data-state="idle">codegen <span class="stage-ms"></span></span>
+  <span class="arrow">→</span>
+  <span class="stage-chip" data-stage="cc" data-state="idle">cc(サーバー) <span class="stage-ms"></span></span>
+  <span class="arrow">→</span>
+  <span class="stage-chip" data-stage="run" data-state="idle">run <span class="stage-ms"></span></span>
+</div>
+
+<main class="cols">
+  <section class="col" id="pane-ruby">
+    <div class="pane-head">Ruby <span class="map-notice">位置対応オフ(パーサがソースを書き換えたため)</span></div>
+    <div class="pane-body" id="ruby-editor">
+      <pre id="ruby-overlay" aria-hidden="true"></pre>
+      <textarea id="ruby-input" spellcheck="false" aria-label="Ruby ソース"></textarea>
+      <div id="hover-tooltip" hidden></div>
+    </div>
+  </section>
+  <section class="col" id="pane-ast">
+    <div class="pane-head">AST <button class="pane-toggle" data-mode="tree">生テキスト</button></div>
+    <div class="pane-body"></div>
+  </section>
+  <section class="col" id="pane-ir">
+    <div class="pane-head">型推論 (IR) <button class="pane-toggle" data-mode="pretty">生テキスト</button></div>
+    <div class="pane-body"></div>
+  </section>
+  <section class="col" id="pane-c">
+    <div class="pane-head">C</div>
+    <div class="pane-body"></div>
+  </section>
+  <section class="col" id="pane-output">
+    <div class="pane-head">実行結果</div>
+    <div class="pane-body"></div>
+  </section>
+</main>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

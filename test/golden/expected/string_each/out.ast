@@ -1,0 +1,91 @@
+ROOT 0
+N 0 ProgramNode
+N 1 StatementsNode
+N 2 LocalVariableWriteNode
+S 2 name words
+N 3 ArrayNode
+N 4 StringNode
+S 4 content spinel
+N 5 StringNode
+S 5 content compiles
+N 6 StringNode
+S 6 content ruby
+A 3 elements 4,5,6
+R 2 value 3
+N 7 CallNode
+S 7 name each
+N 8 LocalVariableReadNode
+S 8 name words
+R 7 receiver 8
+R 7 arguments -1
+N 9 BlockNode
+N 10 BlockParametersNode
+N 11 ParametersNode
+N 12 RequiredParameterNode
+S 12 name w
+A 11 requireds 12
+A 11 optionals 
+A 11 keywords 
+A 11 posts 
+R 10 parameters 11
+R 9 parameters 10
+N 13 StatementsNode
+N 14 CallNode
+S 14 name puts
+R 14 receiver -1
+N 15 ArgumentsNode
+N 16 CallNode
+S 16 name upcase
+N 17 LocalVariableReadNode
+S 17 name w
+R 16 receiver 17
+R 16 arguments -1
+R 16 block -1
+A 15 arguments 16
+R 14 arguments 15
+R 14 block -1
+A 13 body 14
+R 9 body 13
+R 7 block 9
+N 18 CallNode
+S 18 name puts
+R 18 receiver -1
+N 19 ArgumentsNode
+N 20 CallNode
+S 20 name sum
+N 21 CallNode
+S 21 name map
+N 22 LocalVariableReadNode
+S 22 name words
+R 21 receiver 22
+R 21 arguments -1
+N 23 BlockNode
+N 24 BlockParametersNode
+N 25 ParametersNode
+N 26 RequiredParameterNode
+S 26 name w
+A 25 requireds 26
+A 25 optionals 
+A 25 keywords 
+A 25 posts 
+R 24 parameters 25
+R 23 parameters 24
+N 27 StatementsNode
+N 28 CallNode
+S 28 name length
+N 29 LocalVariableReadNode
+S 29 name w
+R 28 receiver 29
+R 28 arguments -1
+R 28 block -1
+A 27 body 28
+R 23 body 27
+R 21 block 23
+R 20 receiver 21
+R 20 arguments -1
+R 20 block -1
+A 19 arguments 20
+R 18 arguments 19
+R 18 block -1
+A 1 body 2,7,18
+R 0 statements 1

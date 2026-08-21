@@ -1,0 +1,54 @@
+ROOT 0
+N 0 ProgramNode
+N 1 StatementsNode
+N 2 LocalVariableWriteNode
+S 2 name greeting
+N 3 StringNode
+S 3 content こんにちは
+R 2 value 3
+N 4 LocalVariableWriteNode
+S 4 name name
+N 5 StringNode
+S 5 content spinel
+R 4 value 5
+N 6 CallNode
+S 6 name puts
+R 6 receiver -1
+N 7 ArgumentsNode
+N 8 InterpolatedStringNode
+N 9 EmbeddedStatementsNode
+N 10 StatementsNode
+N 11 LocalVariableReadNode
+S 11 name greeting
+A 10 body 11
+R 9 statements 10
+N 12 StringNode
+S 12 content 、
+N 13 EmbeddedStatementsNode
+N 14 StatementsNode
+N 15 LocalVariableReadNode
+S 15 name name
+A 14 body 15
+R 13 statements 14
+N 16 StringNode
+S 16 content !
+A 8 parts 9,12,13,16
+A 7 arguments 8
+R 6 arguments 7
+R 6 block -1
+N 17 CallNode
+S 17 name puts
+R 17 receiver -1
+N 18 ArgumentsNode
+N 19 CallNode
+S 19 name length
+N 20 LocalVariableReadNode
+S 20 name greeting
+R 19 receiver 20
+R 19 arguments -1
+R 19 block -1
+A 18 arguments 19
+R 17 arguments 18
+R 17 block -1
+A 1 body 2,4,6,17
+R 0 statements 1

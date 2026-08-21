@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# The golden / API / sandbox / E2E tests need the spinel toolchain build and a
+# Docker sandbox image, which is too heavy for per-push CI. They are run
+# locally (see README "テスト"). CI covers the pure-logic tests only.
+jobs:
+  unit:
+    name: Unit tests (mapping)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - run: node --test test/unit/*.mjs
+
+  server:
+    name: Server tests (rate limiter)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "4.0"
+          working-directory: server
+          bundler-cache: true
+      - run: bundle exec ruby -Itest test/rate_limiter_test.rb

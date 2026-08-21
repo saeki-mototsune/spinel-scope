@@ -1,0 +1,135 @@
+ROOT 0
+N 0 ProgramNode
+N 1 StatementsNode
+N 2 DefNode
+S 2 name risky
+N 3 ParametersNode
+N 4 RequiredParameterNode
+S 4 name n
+A 3 requireds 4
+A 3 optionals 
+A 3 keywords 
+A 3 posts 
+R 2 parameters 3
+N 5 StatementsNode
+N 6 IfNode
+N 7 CallNode
+S 7 name >
+N 8 LocalVariableReadNode
+S 8 name n
+R 7 receiver 8
+N 9 ArgumentsNode
+N 10 IntegerNode
+I 10 value 2
+A 9 arguments 10
+R 7 arguments 9
+R 7 block -1
+R 6 predicate 7
+N 11 StatementsNode
+N 12 CallNode
+S 12 name raise
+R 12 receiver -1
+N 13 ArgumentsNode
+N 14 StringNode
+S 14 content boom
+A 13 arguments 14
+R 12 arguments 13
+R 12 block -1
+A 11 body 12
+R 6 statements 11
+R 6 subsequent -1
+N 15 CallNode
+S 15 name *
+N 16 LocalVariableReadNode
+S 16 name n
+R 15 receiver 16
+N 17 ArgumentsNode
+N 18 IntegerNode
+I 18 value 10
+A 17 arguments 18
+R 15 arguments 17
+R 15 block -1
+A 5 body 6,15
+R 2 body 5
+R 2 receiver -1
+N 19 BeginNode
+N 20 StatementsNode
+N 21 CallNode
+S 21 name puts
+R 21 receiver -1
+N 22 ArgumentsNode
+N 23 CallNode
+S 23 name risky
+R 23 receiver -1
+N 24 ArgumentsNode
+N 25 IntegerNode
+I 25 value 1
+A 24 arguments 25
+R 23 arguments 24
+R 23 block -1
+A 22 arguments 23
+R 21 arguments 22
+R 21 block -1
+N 26 CallNode
+S 26 name puts
+R 26 receiver -1
+N 27 ArgumentsNode
+N 28 CallNode
+S 28 name risky
+R 28 receiver -1
+N 29 ArgumentsNode
+N 30 IntegerNode
+I 30 value 5
+A 29 arguments 30
+R 28 arguments 29
+R 28 block -1
+A 27 arguments 28
+R 26 arguments 27
+R 26 block -1
+A 20 body 21,26
+R 19 statements 20
+N 31 RescueNode
+A 31 exceptions 
+N 32 LocalVariableTargetNode
+S 32 name e
+R 31 reference 32
+N 33 StatementsNode
+N 34 CallNode
+S 34 name puts
+R 34 receiver -1
+N 35 ArgumentsNode
+N 36 InterpolatedStringNode
+N 37 StringNode
+S 37 content rescued:%20
+N 38 EmbeddedStatementsNode
+N 39 StatementsNode
+N 40 CallNode
+S 40 name message
+N 41 LocalVariableReadNode
+S 41 name e
+R 40 receiver 41
+R 40 arguments -1
+R 40 block -1
+A 39 body 40
+R 38 statements 39
+A 36 parts 37,38
+A 35 arguments 36
+R 34 arguments 35
+R 34 block -1
+A 33 body 34
+R 31 statements 33
+R 31 subsequent -1
+R 19 rescue_clause 31
+R 19 ensure_clause -1
+R 19 else_clause -1
+N 42 CallNode
+S 42 name puts
+R 42 receiver -1
+N 43 ArgumentsNode
+N 44 StringNode
+S 44 content after
+A 43 arguments 44
+R 42 arguments 43
+R 42 block -1
+A 1 body 2,19,42
+R 0 statements 1

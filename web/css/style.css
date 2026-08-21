@@ -1,0 +1,68 @@
+* { box-sizing: border-box; margin: 0; }
+:root {
+  --border: #8886;
+  --hl: #f59e0b55;
+  --hl-line: #f59e0b;
+  --ok: #059669;
+  --fail: #dc2626;
+  --dim: #64748b;
+  font-family: -apple-system, "Hiragino Sans", sans-serif;
+}
+body { display: flex; flex-direction: column; height: 100vh; }
+.app-head { display: flex; align-items: center; gap: 12px; padding: 8px 14px; border-bottom: 1px solid var(--border); }
+.app-head .logo { font-weight: bold; }
+.app-head select, .app-head button { font-size: 13px; padding: 4px 12px; border-radius: 6px; border: 1px solid var(--border); background: transparent; }
+.app-head button.run { background: var(--ok); color: #fff; border-color: var(--ok); font-weight: bold; cursor: pointer; }
+.app-head .spacer { flex: 1; }
+.app-head .hint { font-size: 11px; color: var(--dim); }
+#stagebar { display: flex; gap: 8px; align-items: center; padding: 6px 14px; border-bottom: 1px solid var(--border); }
+.stage-chip { padding: 3px 10px; border-radius: 999px; font-size: 12px; background: #8882; }
+.stage-chip[data-state="running"] { background: #f59e0b33; }
+.stage-chip[data-state="ok"] { background: #05966922; }
+.stage-chip[data-state="ok"]::before { content: "✓ "; color: var(--ok); }
+.stage-chip[data-state="fail"] { background: #dc262622; }
+.stage-chip[data-state="fail"]::before { content: "✗ "; color: var(--fail); }
+.stage-ms { color: var(--dim); font-size: 10px; }
+#stagebar .arrow { color: var(--dim); }
+.cols { display: flex; flex: 1; min-height: 0; }
+.col { flex: 1; min-width: 0; display: flex; flex-direction: column; border-right: 1px solid var(--border); }
+.col:last-child { border-right: none; }
+.pane-head { display: flex; justify-content: space-between; align-items: center; padding: 5px 10px; font-size: 12px; font-weight: bold; border-bottom: 1px solid var(--border); }
+.pane-toggle { font-size: 10px; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border); background: transparent; cursor: pointer; }
+.pane-body { flex: 1; overflow: auto; position: relative; font-family: ui-monospace, "SF Mono", monospace; font-size: 12px; line-height: 1.5; }
+.pane-body pre { padding: 8px 10px; white-space: pre; }
+.pane-body.stale { opacity: 0.45; }
+.col.collapsed { flex: 0 0 34px; }
+.col.collapsed .pane-body { display: none; }
+.col.collapsed .pane-head { writing-mode: vertical-rl; justify-content: flex-start; gap: 6px; height: 100%; border-bottom: none; }
+#ruby-editor { position: relative; }
+#ruby-input, #ruby-overlay {
+  position: absolute; inset: 0; padding: 8px 10px; margin: 0; border: none;
+  font: 12px/1.5 ui-monospace, "SF Mono", monospace; white-space: pre-wrap; word-break: break-all;
+}
+#ruby-input { z-index: 1; color: transparent; caret-color: #f59e0b; background: transparent; pointer-events: none; }
+#ruby-input.editing { pointer-events: auto; }
+#ruby-overlay { z-index: 0; pointer-events: auto; }
+#ruby-input:focus { outline: none; }
+#hover-tooltip {
+  position: absolute; z-index: 3; background: #1e293b; color: #e2e8f0;
+  border-radius: 5px; padding: 3px 8px; font-size: 11px; pointer-events: none;
+  box-shadow: 0 2px 8px #0006; white-space: nowrap;
+}
+.map-notice { display: none; font-weight: normal; font-size: 10px; color: var(--dim); }
+.pane-head.map-off .map-notice { display: inline; }
+.hl { background: var(--hl); outline: 1px solid var(--hl-line); border-radius: 2px; }
+#ruby-overlay span.hl { background: var(--hl); }
+.err-text { color: var(--fail); white-space: pre-wrap; padding: 8px 10px; }
+.dim { color: var(--dim); }
+#pane-ast details { padding-left: 14px; }
+#pane-ast summary { cursor: pointer; list-style-position: outside; }
+#pane-ast .ast-leaf { padding-left: 28px; }
+#pane-ast .ast-node { border-radius: 2px; padding: 0 2px; }
+#pane-ast .pane-body { padding: 6px 4px; }
+.ir-section { padding: 6px 10px 2px; }
+.ir-method, .ir-ivar, .ir-ndtype { padding: 1px 10px 1px 18px; border-radius: 3px; }
+.ir-method { background: #7c3aed12; margin: 2px 8px; }
+#pane-ir details { padding: 4px 10px; }
+.c-line { padding: 0 10px; }
+.c-line.hl { background: var(--hl); }

@@ -1,0 +1,17 @@
+.git
+.gitignore
+.superpowers
+.kamal
+docs
+patches
+test
+toolchain/emsdk
+toolchain/clang-wasm
+toolchain/wasi-sdk
+toolchain/spinel-src/.git
+server/test
+web/wasm
+toolchain/spinel-src/build
+toolchain/spinel-src/lib/*.a
+toolchain/spinel-src/lib/*.o
+**/node_modules

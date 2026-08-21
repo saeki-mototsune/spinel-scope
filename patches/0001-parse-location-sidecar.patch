@@ -1,0 +1,49 @@
+diff --git a/spinel_parse.c b/spinel_parse.c
+index e195863..00f319d 100644
+--- a/spinel_parse.c
++++ b/spinel_parse.c
+@@ -28,6 +28,9 @@ static int line_count;
+ static int line_cap;
+ static int node_counter;
+ 
++/* ---- Location sidecar (SPINEL_AST_LOCATIONS) ---- */
++static FILE *g_loc_fp;
++
+ static void out_add(const char *fmt, ...) {
+   va_list ap;
+   va_start(ap, fmt);
+@@ -159,6 +162,10 @@ static int flatten(pm_node_t *node) {
+   if (!node) return -1;
+ 
+   int id = node_counter++;
++  if (g_loc_fp)
++    fprintf(g_loc_fp, "%d %ld %ld\n", id,
++            (long)(node->location.start - g_parser->start),
++            (long)(node->location.end - g_parser->start));
+   pm_node_type_t t = PM_NODE_TYPE(node);
+ 
+ #define N(type_name) out_add("N %d " type_name, id)
+@@ -1571,6 +1578,15 @@ int main(int argc, char **argv) {
+   g_source_file = source_file;
+   g_source_file_escaped = escape_str((const uint8_t *)g_source_file, strlen(g_source_file));
+ 
++  const char *loc_path = getenv("SPINEL_AST_LOCATIONS");
++  if (loc_path && *loc_path) {
++    g_loc_fp = fopen(loc_path, "wb");
++    char src_path[4096];
++    snprintf(src_path, sizeof(src_path), "%s.src", loc_path);
++    FILE *sf = fopen(src_path, "wb");
++    if (sf) { fwrite(source, 1, source_len, sf); fclose(sf); }
++  }
++
+   /* Flatten AST to text */
+   lines = NULL;
+   line_count = 0;
+@@ -1578,6 +1594,7 @@ int main(int argc, char **argv) {
+   node_counter = 0;
+ 
+   int root_id = flatten(root);
++  if (g_loc_fp) { fclose(g_loc_fp); g_loc_fp = NULL; }
+ 
+   /* Output */
+   FILE *out = stdout;

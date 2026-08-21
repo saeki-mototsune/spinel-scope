@@ -1,0 +1,40 @@
+#!/bin/sh
+# Builds/pushes the SHA-tagged sandbox image and pre-pulls it on every host.
+# Any failure exits non-zero, which aborts the deploy — the app never goes
+# live pointing at a sandbox image that isn't present.
+# (Registry auth on the hosts is done by kamal itself at the start of
+# `kamal deploy`; if a pull fails with an auth error, run `kamal registry
+# login` once and retry.)
+set -e
+
+# Rollback must stay fast and dependency-free: the rolled-back container's
+# baked SANDBOX_IMAGE already exists on the host (SHA-tagged, not pruned).
+[ "${KAMAL_COMMAND:-}" = "rollback" ] && exit 0
+
+HOSTS="${KAMAL_HOSTS:?KAMAL_HOSTS must be set (this hook is run by kamal deploy)}"
+
+git diff-index --quiet HEAD || {
+  echo "pre-deploy: uncommitted changes — commit first (SHA tags must match the built tree)" >&2
+  exit 1
+}
+
+SHA=$(git rev-parse HEAD)
+
+# The sandbox image repo and SSH user live in config/deploy.yml (gitignored,
+# environment-specific) — read them from there instead of hardcoding.
+CONFIG=config/deploy.yml
+IMAGE=$(sed -n 's|^ *SANDBOX_IMAGE: *\(.*\):<%.*|\1|p' "$CONFIG")
+[ -n "$IMAGE" ] || {
+  echo "pre-deploy: could not read SANDBOX_IMAGE from $CONFIG" >&2
+  exit 1
+}
+SSH_USER=$(sed -n 's|^ *user: *\(.*\)|\1|p' "$CONFIG")
+SSH_USER="${SSH_USER:-root}"
+
+echo "pre-deploy: building and pushing $IMAGE:$SHA"
+docker buildx build --platform linux/amd64 --target sandbox -t "$IMAGE:$SHA" --push .
+
+for HOST in $(echo "$HOSTS" | tr ',' ' '); do
+  echo "pre-deploy: pulling $IMAGE:$SHA on $HOST"
+  ssh "$SSH_USER@$HOST" "docker pull $IMAGE:$SHA"
+done
