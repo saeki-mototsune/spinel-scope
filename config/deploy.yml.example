@@ -4,8 +4,8 @@
 # Rendered through ERB — SANDBOX_IMAGE pins the sandbox to the same git
 # SHA as the app image (clean-tree deploys are enforced by
 # .kamal/hooks/pre-deploy).
-service: spinel-visualize
-image: <GHCR_OWNER>/spinel-visualize
+service: spinel-scope
+image: <GHCR_OWNER>/spinel-scope
 
 servers:
   web:

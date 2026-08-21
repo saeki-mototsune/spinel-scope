@@ -2,7 +2,7 @@ require "sinatra/base"
 require "json"
 require_relative "sandbox_runner"
 
-module SpinelVisualize
+module SpinelScope
   class App < Sinatra::Base
     MAX_C_SOURCE_BYTES = 1_000_000
 

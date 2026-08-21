@@ -6,7 +6,7 @@ require_relative "../rate_limiter"
 class ApiTest < Minitest::Test
   include Rack::Test::Methods
 
-  def app = SpinelVisualize::App
+  def app = SpinelScope::App
 
   FIB_C = File.read(File.join(ROOT, "test/golden/expected/fib/out.c"))
   FIB_OUT = File.read(File.join(ROOT, "test/golden/expected/fib/run.txt"))
@@ -45,7 +45,7 @@ class ApiTest < Minitest::Test
   end
 
   def test_rate_limit_returns_429
-    limiter = RateLimiter.new(SpinelVisualize::App, limit: 2, window: 60)
+    limiter = RateLimiter.new(SpinelScope::App, limit: 2, window: 60)
     session = Rack::Test::Session.new(limiter)
     session.header "HOST", "localhost"
     3.times do |i|

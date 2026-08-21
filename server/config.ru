@@ -6,4 +6,4 @@ require_relative "rate_limiter"
 # real compile_run calls to sit at the production ceiling.
 use RateLimiter, limit: Integer(ENV.fetch("RATE_LIMIT", "10"), 10),
                  trust_proxy: ENV["TRUST_PROXY"] == "1"
-run SpinelVisualize::App
+run SpinelScope::App

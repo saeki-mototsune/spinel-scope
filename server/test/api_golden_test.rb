@@ -7,7 +7,7 @@ require_relative "../app"
 class ApiGoldenTest < Minitest::Test
   include Rack::Test::Methods
 
-  def app = SpinelVisualize::App
+  def app = SpinelScope::App
 
   def setup
     header "HOST", "localhost"

@@ -1,4 +1,4 @@
-# spinel visualize toolchain — builds web/wasm/ artifacts.
+# spinel scope toolchain — builds web/wasm/ artifacts.
 # Prereqs: toolchain/spinel-src submodule initialized + patches applied,
 #          toolchain/emsdk installed. `source emsdk_env.sh` before running, or
 #          use the emcc path below.

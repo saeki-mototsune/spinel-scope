@@ -1,4 +1,4 @@
-# spinel visualize
+# spinel scope
 
 **デモ: https://spinel-scope.mototsune.dev** | [English summary](README.en.md)
 
