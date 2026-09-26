@@ -1,9 +1,36 @@
 ROOT 0
+SOURCE_FILE main.rb
+FILE 0 main.rb
+I 0 node_line 1
+I 0 node_file 0
+I 0 node_col 0
+I 0 node_end_line 12
+I 0 node_end_col 12
 N 0 ProgramNode
+I 1 node_line 1
+I 1 node_file 0
+I 1 node_col 0
+I 1 node_end_line 12
+I 1 node_end_col 12
 N 1 StatementsNode
+I 2 node_line 1
+I 2 node_file 0
+I 2 node_col 0
+I 2 node_end_line 4
+I 2 node_end_col 3
 N 2 DefNode
 S 2 name risky
+I 3 node_line 1
+I 3 node_file 0
+I 3 node_col 10
+I 3 node_end_line 1
+I 3 node_end_col 11
 N 3 ParametersNode
+I 4 node_line 1
+I 4 node_file 0
+I 4 node_col 10
+I 4 node_end_line 1
+I 4 node_end_col 11
 N 4 RequiredParameterNode
 S 4 name n
 A 3 requireds 4
@@ -11,125 +38,339 @@ A 3 optionals
 A 3 keywords 
 A 3 posts 
 R 2 parameters 3
+I 5 node_line 2
+I 5 node_file 0
+I 5 node_col 2
+I 5 node_end_line 3
+I 5 node_end_col 8
 N 5 StatementsNode
+I 6 node_line 2
+I 6 node_file 0
+I 6 node_col 2
+I 6 node_end_line 2
+I 6 node_end_col 23
 N 6 IfNode
+I 7 node_line 2
+I 7 node_file 0
+I 7 node_col 18
+I 7 node_end_line 2
+I 7 node_end_col 23
 N 7 CallNode
 S 7 name >
+I 8 node_line 2
+I 8 node_file 0
+I 8 node_col 18
+I 8 node_end_line 2
+I 8 node_end_col 19
 N 8 LocalVariableReadNode
 S 8 name n
 R 7 receiver 8
+I 9 node_line 2
+I 9 node_file 0
+I 9 node_col 22
+I 9 node_end_line 2
+I 9 node_end_col 23
 N 9 ArgumentsNode
+I 10 node_line 2
+I 10 node_file 0
+I 10 node_col 22
+I 10 node_end_line 2
+I 10 node_end_col 23
 N 10 IntegerNode
 I 10 value 2
 A 9 arguments 10
 R 7 arguments 9
 R 7 block -1
+S 7 call_operator .
 R 6 predicate 7
+I 11 node_line 2
+I 11 node_file 0
+I 11 node_col 2
+I 11 node_end_line 2
+I 11 node_end_col 14
 N 11 StatementsNode
+I 12 node_line 2
+I 12 node_file 0
+I 12 node_col 2
+I 12 node_end_line 2
+I 12 node_end_col 14
 N 12 CallNode
 S 12 name raise
 R 12 receiver -1
+I 13 node_line 2
+I 13 node_file 0
+I 13 node_col 8
+I 13 node_end_line 2
+I 13 node_end_col 14
 N 13 ArgumentsNode
+I 14 node_line 2
+I 14 node_file 0
+I 14 node_col 8
+I 14 node_end_line 2
+I 14 node_end_col 14
 N 14 StringNode
 S 14 content boom
+I 14 fzl 1
 A 13 arguments 14
 R 12 arguments 13
 R 12 block -1
+S 12 call_operator .
 A 11 body 12
 R 6 statements 11
 R 6 subsequent -1
+I 15 node_line 3
+I 15 node_file 0
+I 15 node_col 2
+I 15 node_end_line 3
+I 15 node_end_col 8
 N 15 CallNode
 S 15 name *
+I 16 node_line 3
+I 16 node_file 0
+I 16 node_col 2
+I 16 node_end_line 3
+I 16 node_end_col 3
 N 16 LocalVariableReadNode
 S 16 name n
 R 15 receiver 16
+I 17 node_line 3
+I 17 node_file 0
+I 17 node_col 6
+I 17 node_end_line 3
+I 17 node_end_col 8
 N 17 ArgumentsNode
+I 18 node_line 3
+I 18 node_file 0
+I 18 node_col 6
+I 18 node_end_line 3
+I 18 node_end_col 8
 N 18 IntegerNode
 I 18 value 10
 A 17 arguments 18
 R 15 arguments 17
 R 15 block -1
+S 15 call_operator .
 A 5 body 6,15
 R 2 body 5
 R 2 receiver -1
+I 19 node_line 6
+I 19 node_file 0
+I 19 node_col 0
+I 19 node_end_line 11
+I 19 node_end_col 3
 N 19 BeginNode
+I 20 node_line 7
+I 20 node_file 0
+I 20 node_col 2
+I 20 node_end_line 8
+I 20 node_end_col 15
 N 20 StatementsNode
+I 21 node_line 7
+I 21 node_file 0
+I 21 node_col 2
+I 21 node_end_line 7
+I 21 node_end_col 15
 N 21 CallNode
 S 21 name puts
 R 21 receiver -1
+I 22 node_line 7
+I 22 node_file 0
+I 22 node_col 7
+I 22 node_end_line 7
+I 22 node_end_col 15
 N 22 ArgumentsNode
+I 23 node_line 7
+I 23 node_file 0
+I 23 node_col 7
+I 23 node_end_line 7
+I 23 node_end_col 15
 N 23 CallNode
 S 23 name risky
 R 23 receiver -1
+I 24 node_line 7
+I 24 node_file 0
+I 24 node_col 13
+I 24 node_end_line 7
+I 24 node_end_col 14
 N 24 ArgumentsNode
+I 25 node_line 7
+I 25 node_file 0
+I 25 node_col 13
+I 25 node_end_line 7
+I 25 node_end_col 14
 N 25 IntegerNode
 I 25 value 1
 A 24 arguments 25
 R 23 arguments 24
 R 23 block -1
+S 23 call_operator .
 A 22 arguments 23
 R 21 arguments 22
 R 21 block -1
+S 21 call_operator .
+I 26 node_line 8
+I 26 node_file 0
+I 26 node_col 2
+I 26 node_end_line 8
+I 26 node_end_col 15
 N 26 CallNode
 S 26 name puts
 R 26 receiver -1
+I 27 node_line 8
+I 27 node_file 0
+I 27 node_col 7
+I 27 node_end_line 8
+I 27 node_end_col 15
 N 27 ArgumentsNode
+I 28 node_line 8
+I 28 node_file 0
+I 28 node_col 7
+I 28 node_end_line 8
+I 28 node_end_col 15
 N 28 CallNode
 S 28 name risky
 R 28 receiver -1
+I 29 node_line 8
+I 29 node_file 0
+I 29 node_col 13
+I 29 node_end_line 8
+I 29 node_end_col 14
 N 29 ArgumentsNode
+I 30 node_line 8
+I 30 node_file 0
+I 30 node_col 13
+I 30 node_end_line 8
+I 30 node_end_col 14
 N 30 IntegerNode
 I 30 value 5
 A 29 arguments 30
 R 28 arguments 29
 R 28 block -1
+S 28 call_operator .
 A 27 arguments 28
 R 26 arguments 27
 R 26 block -1
+S 26 call_operator .
 A 20 body 21,26
 R 19 statements 20
+I 31 node_line 9
+I 31 node_file 0
+I 31 node_col 0
+I 31 node_end_line 10
+I 31 node_end_col 30
 N 31 RescueNode
 A 31 exceptions 
+I 32 node_line 9
+I 32 node_file 0
+I 32 node_col 10
+I 32 node_end_line 9
+I 32 node_end_col 11
 N 32 LocalVariableTargetNode
 S 32 name e
 R 31 reference 32
+I 33 node_line 10
+I 33 node_file 0
+I 33 node_col 2
+I 33 node_end_line 10
+I 33 node_end_col 30
 N 33 StatementsNode
+I 34 node_line 10
+I 34 node_file 0
+I 34 node_col 2
+I 34 node_end_line 10
+I 34 node_end_col 30
 N 34 CallNode
 S 34 name puts
 R 34 receiver -1
+I 35 node_line 10
+I 35 node_file 0
+I 35 node_col 7
+I 35 node_end_line 10
+I 35 node_end_col 30
 N 35 ArgumentsNode
+I 36 node_line 10
+I 36 node_file 0
+I 36 node_col 7
+I 36 node_end_line 10
+I 36 node_end_col 30
 N 36 InterpolatedStringNode
+I 37 node_line 10
+I 37 node_file 0
+I 37 node_col 8
+I 37 node_end_line 10
+I 37 node_end_col 17
 N 37 StringNode
 S 37 content rescued:%20
+I 37 fzl 1
+I 38 node_line 10
+I 38 node_file 0
+I 38 node_col 17
+I 38 node_end_line 10
+I 38 node_end_col 29
 N 38 EmbeddedStatementsNode
+I 39 node_line 10
+I 39 node_file 0
+I 39 node_col 19
+I 39 node_end_line 10
+I 39 node_end_col 28
 N 39 StatementsNode
+I 40 node_line 10
+I 40 node_file 0
+I 40 node_col 19
+I 40 node_end_line 10
+I 40 node_end_col 28
 N 40 CallNode
 S 40 name message
+I 41 node_line 10
+I 41 node_file 0
+I 41 node_col 19
+I 41 node_end_line 10
+I 41 node_end_col 20
 N 41 LocalVariableReadNode
 S 41 name e
 R 40 receiver 41
 R 40 arguments -1
 R 40 block -1
+S 40 call_operator .
 A 39 body 40
 R 38 statements 39
 A 36 parts 37,38
+I 36 fzl 1
 A 35 arguments 36
 R 34 arguments 35
 R 34 block -1
+S 34 call_operator .
 A 33 body 34
 R 31 statements 33
 R 31 subsequent -1
 R 19 rescue_clause 31
 R 19 ensure_clause -1
 R 19 else_clause -1
+I 42 node_line 12
+I 42 node_file 0
+I 42 node_col 0
+I 42 node_end_line 12
+I 42 node_end_col 12
 N 42 CallNode
 S 42 name puts
 R 42 receiver -1
+I 43 node_line 12
+I 43 node_file 0
+I 43 node_col 5
+I 43 node_end_line 12
+I 43 node_end_col 12
 N 43 ArgumentsNode
+I 44 node_line 12
+I 44 node_file 0
+I 44 node_col 5
+I 44 node_end_line 12
+I 44 node_end_col 12
 N 44 StringNode
 S 44 content after
+I 44 fzl 1
 A 43 arguments 44
 R 42 arguments 43
 R 42 block -1
+S 42 call_operator .
 A 1 body 2,19,42
 R 0 statements 1

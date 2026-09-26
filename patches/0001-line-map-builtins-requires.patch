@@ -1,0 +1,65 @@
+Subject: [PATCH] line map: don't count the compiler's own builtins requires
+
+sp_splice_builtins() and friends prepend `require "builtins/..."` lines to
+the entry script. Each is spliced like a user's require, and the line map's
+PUSH marker consumes one parent line for it -- a line the user never wrote.
+Every node of the entry script then reports a line one too far per spliced
+builtins file: --emit-types spans, --emit-symbol-map lines, the C `#line`
+directives and the compile's own `file:line:col` messages.
+
+For example a program whose `3.times { c.increment }` splices both
+builtins/enumerable.rb and builtins/enumerator.rb reports its line-2
+`def initialize` at line 4 in --emit-types.
+
+Count the synthesized header lines and start the entry script's frame that
+many lines early.
+
+diff --git a/src/spinel_parse.c b/src/spinel_parse.c
+index 091b2d70..0f33cf4b 100644
+--- a/src/spinel_parse.c
++++ b/src/spinel_parse.c
+@@ -233,6 +233,11 @@ static void sp_fsl_splice(unsigned char **buf, size_t *n, size_t at,
+ static int *sp_line_file = NULL;  /* buffer line (1-based) -> file id */
+ static int *sp_line_orig = NULL;  /* buffer line (1-based) -> original line */
+ static int sp_line_map_n = 0;
++/* `require "builtins/..."` lines the compiler itself prepends to the entry
++   script. Each one is replaced by a PUSH/POP-wrapped splice whose PUSH
++   consumes a parent line -- a line the user never wrote -- so the line map
++   starts the entry script's frame that many lines early. */
++static int sp_synth_head_lines = 0;
+ static char **sp_file_table;   /* id -> path; defined with the map builder below */
+ 
+ /* The file a node was written in when that is a required file, or NULL for
+@@ -2164,7 +2169,7 @@ static void sp_build_line_map(const char *src, const char *toplevel) {
+   }
+   int sp = 0;
+   stk_file[sp] = sp_intern_file(toplevel);
+-  stk_next[sp] = 1;
++  stk_next[sp] = 1 - sp_synth_head_lines;
+ 
+   int bl = 1;
+   const char *line = src;
+@@ -2694,6 +2699,7 @@ static char *sp_splice_builtins(char *source, const char *exe_path,
+   char *ns = (char *)malloc(sl + hl + 1);
+   if (!ns) return source;
+   memcpy(ns, head, hl); memcpy(ns + hl, source, sl + 1);
++  sp_synth_head_lines++;
+   free(source);
+   return resolve_plain_requires(ns, exe_path, fsl, fsl_n);
+ }
+@@ -2728,6 +2734,7 @@ static char *sp_splice_builtin_enumerator(char *source, const char *exe_path,
+   char *ns = (char *)malloc(sl + hl + 1);
+   if (!ns) return source;
+   memcpy(ns, head, hl); memcpy(ns + hl, source, sl + 1);
++  sp_synth_head_lines++;
+   free(source);
+   return resolve_plain_requires(ns, exe_path, fsl, fsl_n);
+ }
+@@ -2784,6 +2791,7 @@ static char *sp_splice_builtin_extra(char *source, const char *exe_path, SpBuilt
+   char *ns = (char *)malloc(sl + hl + 1);
+   if (!ns) return source;
+   memcpy(ns, head, hl); memcpy(ns + hl, source, sl + 1);
++  sp_synth_head_lines++;
+   free(source);
+   return resolve_plain_requires(ns, exe_path, fsl, fsl_n);
+ }

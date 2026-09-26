@@ -1,15 +1,14 @@
 import { setStage, resetStages } from "./panels/stagebar.js";
 import { runPipeline, isCurrentRun } from "./pipeline.js";
 import * as astPane from "./panels/ast.js";
-import * as irPane from "./panels/ir.js";
+import * as typesPane from "./panels/types.js";
 import * as cPane from "./panels/cpane.js";
 import { compileRun } from "./api.js";
 import * as outputPane from "./panels/output.js";
 import { buildIndex } from "./mapping.js";
+import { SOURCE_NAME } from "./spinel-runner.js";
 import * as editor from "./panels/editor.js";
 import { wireHighlights, disableHighlights } from "./highlight.js";
-
-let currentIndex = null;
 
 const sampleSelect = document.getElementById("sample-select");
 
@@ -38,17 +37,21 @@ async function loadSamples() {
   }
 }
 
+function markAllStale() {
+  astPane.setStale(true);
+  typesPane.setStale(true);
+  cPane.setStale(true);
+  outputPane.setStale(true);
+  disableHighlights();
+}
+
 async function selectSample(file) {
   try {
     const res = await fetch(`samples/${file}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     editor.setValue(await res.text());
     resetStages();
-    astPane.setStale(true);
-    irPane.setStale(true);
-    cPane.setStale(true);
-    outputPane.setStale(true);
-    disableHighlights();
+    markAllStale();
   } catch (e) {
     showSampleLoadError(e.message || String(e));
   }
@@ -59,58 +62,82 @@ sampleSelect.addEventListener("change", () => selectSample(sampleSelect.value));
 loadSamples();
 
 const runBtn = document.getElementById("run-btn");
-const panes = { parse: astPane, analyze: irPane, codegen: cPane };
 
-editor.onEdit(() => {
-  astPane.setStale(true);
-  irPane.setStale(true);
-  cPane.setStale(true);
-  outputPane.setStale(true);
-  disableHighlights();
-});
+editor.onEdit(markAllStale);
+
+// Says where the Ruby pane is not mapped: nowhere when spinel's positions
+// describe some other text, or on the lines spinel rewrote (see buildIndex).
+function showMapNotice(index) {
+  const head = document.querySelector("#pane-ruby .pane-head");
+  const notice = head.querySelector(".map-notice");
+  if (!index.positionsMatchSource) {
+    notice.textContent = "位置対応オフ(spinel の位置情報がソースと一致しないため)";
+  } else if (index.rewrittenLines.length > 0) {
+    notice.textContent = `${index.rewrittenLines.join(", ")} 行目は位置対応オフ(spinel が構文糖衣を書き換えて解析するため)`;
+  }
+  head.classList.toggle("map-off", !index.positionsMatchSource || index.rewrittenLines.length > 0);
+}
+
+// Builds the cross-highlight index and hands it to the panes. Ruby-side
+// highlighting stays off when spinel's positions do not describe the text
+// in the editor (see buildIndex).
+function indexArtifacts(artifacts) {
+  const index = buildIndex({
+    source: artifacts.source,
+    sourceName: SOURCE_NAME,
+    astText: artifacts.ast,
+    typesJson: artifacts.types ?? "",
+    symbolsJson: artifacts.symbols ?? "",
+    cText: artifacts.c ?? "",
+  });
+  astPane.showTree(index, artifacts.ast);
+  wireHighlights(index, { rubyEnabled: index.positionsMatchSource });
+  showMapNotice(index);
+  return index;
+}
 
 function run() {
   resetStages();
-  astPane.setStale(true);
-  irPane.setStale(true);
-  cPane.setStale(true);
-  outputPane.setStale(true);
+  markAllStale();
   setStage("parse", "running");
-  const runId = runPipeline(editor.getValue(), {
+  const artifacts = { source: editor.getValue() };
+  const runId = runPipeline(artifacts.source, {
     onStage(stage, result) {
       setStage(stage, result.ok ? "ok" : "fail", result.ms);
-      if (!result.ok) {
-        // `panes` only covers the wasm stages (parse/analyze/codegen). A
-        // post-codegen failure reported under stage "cc" (e.g. index build
-        // errors caught in onWasmDone below) has no matching pane — route it
-        // to the output pane instead of throwing on a missing lookup.
-        if (panes[stage]) panes[stage].showError(result.stderr || "(no stderr)");
-        else outputPane.showNetworkError(result.stderr || "(no stderr)");
+      if (stage === "parse") {
+        if (!result.ok) { astPane.showError(result.stderr || "(no stderr)"); return; }
+        artifacts.ast = result.artifacts.ast;
+        astPane.showRaw(artifacts.ast);
+        setStage("compile", "running");
         return;
       }
-      if (stage === "parse") { astPane.showRaw(result.artifacts.ast); setStage("analyze", "running"); }
-      if (stage === "analyze") { irPane.showRaw(result.artifacts.ir); setStage("codegen", "running"); }
-      if (stage === "codegen") { cPane.showRaw(result.artifacts.c); }
+      if (stage === "compile") {
+        if (result.ok) {
+          typesPane.showRaw(result.artifacts.types);
+          cPane.showRaw(result.artifacts.c);
+          return;
+        }
+        // A refused compile: the AST and the diagnostics' positions still
+        // map onto the source, so index what there is.
+        Object.assign(artifacts, result.artifacts || {});
+        let index = null;
+        try { index = indexArtifacts(artifacts); } catch { /* keep the raw panes */ }
+        typesPane.showError(result.stderr, index);
+        cPane.showError("C は生成されませんでした(analyze / codegen の失敗)");
+        return;
+      }
+      // post-compile failures (e.g. index build errors reported under "cc")
+      if (!result.ok) outputPane.showNetworkError(result.stderr || "(no stderr)");
     },
-    async onWasmDone(artifacts) {
+    async onWasmDone(done) {
       const myRun = runId;
-      currentIndex = buildIndex({
-        source: artifacts.source,
-        astText: artifacts.ast,
-        locText: artifacts.loc,
-        irText: artifacts.ir,
-        cText: artifacts.c,
-      });
-      astPane.showTree(currentIndex, artifacts.ast);
-      irPane.showPretty(currentIndex, artifacts.ir);
-      cPane.showCode(currentIndex, artifacts.c);
-      const srcMatches = artifacts.source === artifacts.locSrc;
-      wireHighlights(currentIndex, { rubyEnabled: srcMatches });
-      document.querySelector("#pane-ruby .pane-head").classList.toggle("map-off", !srcMatches);
+      const index = indexArtifacts(done);
+      typesPane.showPretty(index, done.types);
+      cPane.showCode(index, done.c);
       setStage("cc", "running");
       outputPane.showRunning();
       const t = performance.now();
-      const r = await compileRun(artifacts.c);
+      const r = await compileRun(done.c);
       if (!isCurrentRun(myRun)) return;
       const ms = Math.round(performance.now() - t);
       if (r.networkError) {

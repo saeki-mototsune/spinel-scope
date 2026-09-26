@@ -18,9 +18,7 @@
 <div id="stagebar">
   <span class="stage-chip" data-stage="parse" data-state="idle">parse <span class="stage-ms"></span></span>
   <span class="arrow">→</span>
-  <span class="stage-chip" data-stage="analyze" data-state="idle">analyze <span class="stage-ms"></span></span>
-  <span class="arrow">→</span>
-  <span class="stage-chip" data-stage="codegen" data-state="idle">codegen <span class="stage-ms"></span></span>
+  <span class="stage-chip" data-stage="compile" data-state="idle" title="spinel は 1 プロセスで型推論から C 生成まで行う">analyze + codegen <span class="stage-ms"></span></span>
   <span class="arrow">→</span>
   <span class="stage-chip" data-stage="cc" data-state="idle">cc(サーバー) <span class="stage-ms"></span></span>
   <span class="arrow">→</span>
@@ -29,7 +27,7 @@
 
 <main class="cols">
   <section class="col" id="pane-ruby">
-    <div class="pane-head">Ruby <span class="map-notice">位置対応オフ(パーサがソースを書き換えたため)</span></div>
+    <div class="pane-head">Ruby <span class="map-notice"></span></div>
     <div class="pane-body" id="ruby-editor">
       <pre id="ruby-overlay" aria-hidden="true"></pre>
       <textarea id="ruby-input" spellcheck="false" aria-label="Ruby ソース"></textarea>
@@ -40,12 +38,12 @@
     <div class="pane-head">AST <button class="pane-toggle" data-mode="tree">生テキスト</button></div>
     <div class="pane-body"></div>
   </section>
-  <section class="col" id="pane-ir">
-    <div class="pane-head">型推論 (IR) <button class="pane-toggle" data-mode="pretty">生テキスト</button></div>
+  <section class="col" id="pane-types">
+    <div class="pane-head">型情報 (types) <button class="pane-toggle" data-mode="pretty">生 JSON</button></div>
     <div class="pane-body"></div>
   </section>
   <section class="col" id="pane-c">
-    <div class="pane-head">C</div>
+    <div class="pane-head">C <button class="pane-toggle" data-mode="code">#line 込み</button></div>
     <div class="pane-body"></div>
   </section>
   <section class="col" id="pane-output">

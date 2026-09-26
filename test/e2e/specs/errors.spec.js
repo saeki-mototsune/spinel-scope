@@ -7,8 +7,22 @@ test("syntax error turns the parse chip red and shows stderr", async ({ page }) 
   await page.locator("#ruby-input").fill("def broken(\n  end");
   await page.click("#run-btn");
   await expect(page.locator('.stage-chip[data-stage="parse"]')).toHaveAttribute("data-state", "fail", { timeout: 30_000 });
-  await expect(page.locator("#pane-ast .err-text")).toBeVisible();
+  await expect(page.locator("#pane-ast .err-text")).toContainText("unexpected 'end'");
   await expect(page.locator("#pane-c .pane-body")).toHaveClass(/stale/);
+});
+
+test("a refused compile fails analyze + codegen and shows its diagnostic", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#ruby-input").fill("x = 1\nputs @@count\n");
+  await page.click("#run-btn");
+  await expect(page.locator('.stage-chip[data-stage="compile"]')).toHaveAttribute("data-state", "fail", { timeout: 30_000 });
+  await expect(page.locator("#pane-types .err-text")).toContainText("1 refusal");
+  const diag = page.locator("#pane-types .ty-diag-error");
+  await expect(diag).toContainText("L2:1 error");
+  // the refusal's position still maps onto the source
+  await diag.hover();
+  expect((await page.locator("#ruby-overlay .hl").allTextContents()).join("")).toBe("puts @@count");
+  await expect(page.locator('.stage-chip[data-stage="cc"]')).toHaveAttribute("data-state", "idle");
 });
 
 test("infinite loop reports a run timeout", async ({ page }) => {

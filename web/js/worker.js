@@ -1,36 +1,27 @@
-// Module worker: runs the three emcc-built spinel stages.
-// One module instance per callMain (-sINVOKE_RUN=0 -sEXIT_RUNTIME=1).
-const enc = new TextEncoder();
-const dec = new TextDecoder();
+// Module worker: runs the emcc-built spinel compiler twice per visualization
+// (see spinel-runner.js): `--dump-ast` for the parse stage, then one compile
+// that yields the types JSON, the symbol map and the C.
+import { runSpinel, parseRun, compileRun } from "./spinel-runner.js";
 
-async function runTool(moduleUrl, files, env, args, outputs) {
-  const create = (await import(moduleUrl)).default;
-  let stderr = "";
-  const mod = await create({
-    print: () => {},
-    printErr: (line) => { stderr += line + "\n"; },
-    preRun: [(m) => Object.assign(m.ENV, env)],
-  });
-  mod.FS.mkdir("/job");
-  for (const [name, text] of Object.entries(files)) {
-    mod.FS.writeFile(`/job/${name}`, enc.encode(text));
+const MODULE_URL = "/wasm/spinel.mjs";
+const WASM_URL = "/wasm/spinel.wasm";
+
+// The factory and the compiled binary are loaded once per worker; a failed
+// load is dropped so the next run retries it.
+let loading = null;
+function loadSpinel() {
+  if (!loading) {
+    loading = Promise.all([
+      import(MODULE_URL).then((m) => m.default),
+      WebAssembly.compileStreaming(fetch(WASM_URL)),
+    ]).then(([factory, wasmModule]) => ({ factory, wasmModule }));
+    loading.catch(() => { loading = null; });
   }
-  mod.FS.chdir("/job");
-  let code = 0;
-  try {
-    code = mod.callMain(args);
-  } catch (e) {
-    if (e && e.name === "ExitStatus") code = e.status;
-    else { stderr += String(e) + "\n"; code = -1; }
-  }
-  const result = {};
-  if (code === 0) {
-    for (const name of outputs) {
-      result[name] = dec.decode(mod.FS.readFile(`/job/${name}`));
-    }
-  }
-  return { code, stderr, files: result };
+  return loading;
 }
+
+// spinel reports the JSON it wrote on stderr; that is not a diagnostic.
+const cleanStderr = (s) => s.split("\n").filter((l) => !/^Wrote \S+\.json$/.test(l)).join("\n").trim();
 
 self.onmessage = async ({ data }) => {
   const { runId, source } = data;
@@ -39,39 +30,28 @@ self.onmessage = async ({ data }) => {
 
   try {
     let t = stamp();
-    const parse = await runTool("/wasm/spinel_parse.mjs", { "in.rb": source },
-      { SPINEL_AST_LOCATIONS: "loc.txt" }, ["in.rb", "out.ast"],
-      ["out.ast", "loc.txt", "loc.txt.src"]);
+    const { factory, wasmModule } = await loadSpinel();
+    const parse = await runSpinel(factory, parseRun(source), { wasmModule });
     if (parse.code !== 0) {
-      postMessage({ runId, stage: "parse", ok: false, ms: Math.round(stamp() - t), stderr: parse.stderr });
+      postMessage({ runId, stage: "parse", ok: false, ms: Math.round(stamp() - t), stderr: cleanStderr(parse.stderr) });
       return;
     }
+    postMessage({ runId, stage: "parse", ok: true, ms: Math.round(stamp() - t), artifacts: { ast: parse.stdout } });
+
+    stage = "compile";
+    t = stamp();
+    const compile = await runSpinel(factory, compileRun(source), { wasmModule });
     const artifacts = {
-      ast: parse.files["out.ast"], loc: parse.files["loc.txt"], locSrc: parse.files["loc.txt.src"],
+      types: compile.files["types.json"] ?? "",
+      symbols: compile.files["symbols.json"] ?? "",
     };
-    postMessage({ runId, stage: "parse", ok: true, ms: Math.round(stamp() - t), artifacts: { ...artifacts } });
-
-    stage = "analyze";
-    t = stamp();
-    const analyze = await runTool("/wasm/spinel_analyze.mjs",
-      { "in.ast": artifacts.ast }, {}, ["in.ast", "out.ir"], ["out.ir"]);
-    if (analyze.code !== 0) {
-      postMessage({ runId, stage: "analyze", ok: false, ms: Math.round(stamp() - t), stderr: analyze.stderr });
+    if (compile.code !== 0) {
+      // A refused compile still writes its types JSON (the refusals are its
+      // error diagnostics), so the types pane can show where they are.
+      postMessage({ runId, stage, ok: false, ms: Math.round(stamp() - t), stderr: cleanStderr(compile.stderr), artifacts });
       return;
     }
-    artifacts.ir = analyze.files["out.ir"];
-    postMessage({ runId, stage: "analyze", ok: true, ms: Math.round(stamp() - t), artifacts: { ir: artifacts.ir } });
-
-    stage = "codegen";
-    t = stamp();
-    const codegen = await runTool("/wasm/spinel_codegen.mjs",
-      { "in.ast": artifacts.ast, "in.ir": artifacts.ir }, {},
-      ["in.ast", "in.ir", "out.c"], ["out.c"]);
-    if (codegen.code !== 0) {
-      postMessage({ runId, stage: "codegen", ok: false, ms: Math.round(stamp() - t), stderr: codegen.stderr });
-      return;
-    }
-    postMessage({ runId, stage: "codegen", ok: true, ms: Math.round(stamp() - t), artifacts: { c: codegen.files["out.c"] } });
+    postMessage({ runId, stage, ok: true, ms: Math.round(stamp() - t), artifacts: { ...artifacts, c: compile.stdout } });
   } catch (e) {
     postMessage({ runId, stage, ok: false, ms: 0, stderr: "worker internal error: " + String(e) });
   }

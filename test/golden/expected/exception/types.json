@@ -1,0 +1,48 @@
+{
+  "types": [
+    {"file":"main.rb","line":1,"col":0,"end_line":12,"end_col":12,"kind":"StatementsNode","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":1,"col":0,"end_line":4,"end_col":3,"kind":"DefNode","name":"risky","type":"symbol","rbs":"Symbol","owner":"Object","signature":"(Integer) -> Integer"},
+    {"file":"main.rb","line":1,"col":10,"end_line":1,"end_col":11,"kind":"RequiredParameterNode","name":"n","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":2,"col":2,"end_line":3,"end_col":8,"kind":"StatementsNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":2,"col":2,"end_line":2,"end_col":23,"kind":"IfNode","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":2,"col":18,"end_line":2,"end_col":23,"kind":"CallNode","name":">","type":"bool","rbs":"bool"},
+    {"file":"main.rb","line":2,"col":18,"end_line":2,"end_col":19,"kind":"LocalVariableReadNode","name":"n","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":2,"col":22,"end_line":2,"end_col":23,"kind":"IntegerNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":2,"col":8,"end_line":2,"end_col":14,"kind":"StringNode","type":"string","rbs":"String"},
+    {"file":"main.rb","line":3,"col":2,"end_line":3,"end_col":8,"kind":"CallNode","name":"*","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":3,"col":2,"end_line":3,"end_col":3,"kind":"LocalVariableReadNode","name":"n","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":3,"col":6,"end_line":3,"end_col":8,"kind":"IntegerNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":6,"col":0,"end_line":11,"end_col":3,"kind":"BeginNode","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":7,"col":2,"end_line":8,"end_col":15,"kind":"StatementsNode","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":7,"col":2,"end_line":7,"end_col":15,"kind":"CallNode","name":"puts","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":7,"col":7,"end_line":7,"end_col":15,"kind":"CallNode","name":"risky","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":7,"col":13,"end_line":7,"end_col":14,"kind":"IntegerNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":8,"col":2,"end_line":8,"end_col":15,"kind":"CallNode","name":"puts","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":8,"col":7,"end_line":8,"end_col":15,"kind":"CallNode","name":"risky","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":8,"col":13,"end_line":8,"end_col":14,"kind":"IntegerNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":10,"col":2,"end_line":10,"end_col":30,"kind":"StatementsNode","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":10,"col":2,"end_line":10,"end_col":30,"kind":"CallNode","name":"puts","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":10,"col":7,"end_line":10,"end_col":30,"kind":"InterpolatedStringNode","type":"string","rbs":"String"},
+    {"file":"main.rb","line":10,"col":8,"end_line":10,"end_col":17,"kind":"StringNode","type":"string","rbs":"String"},
+    {"file":"main.rb","line":10,"col":19,"end_line":10,"end_col":28,"kind":"StatementsNode","type":"string","rbs":"String"},
+    {"file":"main.rb","line":10,"col":19,"end_line":10,"end_col":28,"kind":"CallNode","name":"message","type":"string","rbs":"String"},
+    {"file":"main.rb","line":10,"col":19,"end_line":10,"end_col":20,"kind":"LocalVariableReadNode","name":"e","type":"exception","rbs":"Exception"},
+    {"file":"main.rb","line":12,"col":0,"end_line":12,"end_col":12,"kind":"CallNode","name":"puts","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":12,"col":5,"end_line":12,"end_col":12,"kind":"StringNode","type":"string","rbs":"String"}
+  ],
+  "diagnostics": [
+
+  ],
+  "codegen": [
+    {"file":"main.rb","line":2,"col":18,"end_line":2,"end_col":23,"kind":"CallNode","name":">","dispatch":"direct"},
+    {"file":"main.rb","line":2,"col":2,"end_line":2,"end_col":14,"kind":"CallNode","name":"raise","dispatch":"direct"},
+    {"file":"main.rb","line":3,"col":2,"end_line":3,"end_col":8,"kind":"CallNode","name":"*","dispatch":"direct"},
+    {"file":"main.rb","line":7,"col":2,"end_line":7,"end_col":15,"kind":"CallNode","name":"puts","dispatch":"direct"},
+    {"file":"main.rb","line":7,"col":7,"end_line":7,"end_col":15,"kind":"CallNode","name":"risky","dispatch":"direct","callee":"risky"},
+    {"file":"main.rb","line":8,"col":2,"end_line":8,"end_col":15,"kind":"CallNode","name":"puts","dispatch":"direct"},
+    {"file":"main.rb","line":8,"col":7,"end_line":8,"end_col":15,"kind":"CallNode","name":"risky","dispatch":"direct","callee":"risky"},
+    {"file":"main.rb","line":10,"col":2,"end_line":10,"end_col":30,"kind":"CallNode","name":"puts","dispatch":"direct"},
+    {"file":"main.rb","line":10,"col":19,"end_line":10,"end_col":28,"kind":"CallNode","name":"message","dispatch":"direct"},
+    {"file":"main.rb","line":12,"col":0,"end_line":12,"end_col":12,"kind":"CallNode","name":"puts","dispatch":"direct"}
+  ]
+}

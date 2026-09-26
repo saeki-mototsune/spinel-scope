@@ -1,17 +1,23 @@
 #!/bin/bash
-# Generates golden expectations by running the PATCHED native spinel pipeline.
+# Generates golden expectations with the PATCHED native spinel
+# (make -C toolchain native): per sample, the text AST, the types JSON, the
+# symbol map and the C of one compile, plus the program's output.
 set -euo pipefail
 cd "$(dirname "$0")"
-SPINEL=../../toolchain/spinel-src
+. ./lib.sh
 
 for rb in samples/*.rb; do
   name=$(basename "$rb" .rb)
   dir="expected/$name"
+  work=$(mktemp -d)
+  cp "$rb" "$work/main.rb"
+  native_artifacts "$work"
+  rm -rf "$dir"
   mkdir -p "$dir"
-  SPINEL_AST_LOCATIONS="$dir/loc.txt" "$SPINEL/spinel_parse" "$rb" "$dir/out.ast"
-  "$SPINEL/spinel_analyze" "$dir/out.ast" "$dir/out.ir"
-  "$SPINEL/spinel_codegen" "$dir/out.ast" "$dir/out.ir" "$dir/out.c"
-  cc -O2 -Wno-all -I"$SPINEL/lib" "$dir/out.c" "$SPINEL/lib/libspinel_rt.a" -lm -o "/tmp/golden-$name"
-  "/tmp/golden-$name" > "$dir/run.txt"
+  for f in out.ast types.json symbols.json out.c; do
+    normalize < "$work/$f" > "$dir/$f"
+  done
+  build_and_run "$work/out.c" "$work/prog" > "$dir/run.txt"
+  rm -rf "$work"
   echo "OK $name"
 done

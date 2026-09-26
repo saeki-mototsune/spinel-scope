@@ -1,8 +1,12 @@
 #!/bin/sh
 # Reads a C program on stdin, compiles and runs it, and emits
 # length-prefixed sections so the caller can split streams safely.
+# build.env (SP_CFLAGS / SP_LIBS) is spinel's own --print-build for this
+# runtime, recorded when the image was built.
+. /opt/spinel/build.env
 cat > /work/user.c
-cc -O2 -Wno-all -I/opt/spinel/lib /work/user.c /opt/spinel/lib/libspinel_rt.a -lm -o /work/prog 2>/work/cc.err
+# shellcheck disable=SC2086
+cc -O2 -Wno-all $SP_CFLAGS /work/user.c $SP_LIBS -o /work/prog 2>/work/cc.err
 CCEXIT=$?
 RUNEXIT=-1
 : > /work/out

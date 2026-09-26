@@ -1,0 +1,27 @@
+{
+  "types": [
+    {"file":"main.rb","line":1,"col":0,"end_line":8,"end_col":3,"kind":"StatementsNode","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":1,"col":0,"end_line":4,"end_col":3,"kind":"DefNode","name":"twice","type":"symbol","rbs":"Symbol","owner":"Object","signature":"() -> nil"},
+    {"file":"main.rb","line":2,"col":2,"end_line":3,"end_col":9,"kind":"StatementsNode","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":2,"col":2,"end_line":2,"end_col":9,"kind":"YieldNode","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":2,"col":8,"end_line":2,"end_col":9,"kind":"IntegerNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":3,"col":2,"end_line":3,"end_col":9,"kind":"YieldNode","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":3,"col":8,"end_line":3,"end_col":9,"kind":"IntegerNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":6,"col":0,"end_line":8,"end_col":3,"kind":"CallNode","name":"twice","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":6,"col":10,"end_line":6,"end_col":11,"kind":"RequiredParameterNode","name":"i","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":7,"col":2,"end_line":7,"end_col":14,"kind":"StatementsNode","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":7,"col":2,"end_line":7,"end_col":14,"kind":"CallNode","name":"puts","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":7,"col":7,"end_line":7,"end_col":14,"kind":"CallNode","name":"*","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":7,"col":7,"end_line":7,"end_col":8,"kind":"LocalVariableReadNode","name":"i","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":7,"col":11,"end_line":7,"end_col":14,"kind":"IntegerNode","type":"int","rbs":"Integer"}
+  ],
+  "diagnostics": [
+
+  ],
+  "codegen": [
+    {"file":"main.rb","line":6,"col":0,"end_line":8,"end_col":3,"kind":"CallNode","name":"twice","dispatch":"direct"},
+    {"file":"main.rb","line":6,"col":6,"end_line":8,"end_col":3,"kind":"BlockNode","inlined":true},
+    {"file":"main.rb","line":7,"col":2,"end_line":7,"end_col":14,"kind":"CallNode","name":"puts","dispatch":"direct"},
+    {"file":"main.rb","line":7,"col":7,"end_line":7,"end_col":14,"kind":"CallNode","name":"*","dispatch":"direct"}
+  ]
+}

@@ -1,54 +1,169 @@
 ROOT 0
+SOURCE_FILE main.rb
+FILE 0 main.rb
+I 0 node_line 2
+I 0 node_file 0
+I 0 node_col 0
+I 0 node_end_line 5
+I 0 node_end_col 20
 N 0 ProgramNode
+I 1 node_line 2
+I 1 node_file 0
+I 1 node_col 0
+I 1 node_end_line 5
+I 1 node_end_col 20
 N 1 StatementsNode
+I 2 node_line 2
+I 2 node_file 0
+I 2 node_col 0
+I 2 node_end_line 2
+I 2 node_end_col 28
 N 2 LocalVariableWriteNode
 S 2 name greeting
+I 3 node_line 2
+I 3 node_file 0
+I 3 node_col 11
+I 3 node_end_line 2
+I 3 node_end_col 28
 N 3 StringNode
 S 3 content こんにちは
+I 3 fzl 1
 R 2 value 3
+I 4 node_line 3
+I 4 node_file 0
+I 4 node_col 0
+I 4 node_end_line 3
+I 4 node_end_col 15
 N 4 LocalVariableWriteNode
 S 4 name name
+I 5 node_line 3
+I 5 node_file 0
+I 5 node_col 7
+I 5 node_end_line 3
+I 5 node_end_col 15
 N 5 StringNode
 S 5 content spinel
+I 5 fzl 1
 R 4 value 5
+I 6 node_line 4
+I 6 node_file 0
+I 6 node_col 0
+I 6 node_end_line 4
+I 6 node_end_col 29
 N 6 CallNode
 S 6 name puts
 R 6 receiver -1
+I 7 node_line 4
+I 7 node_file 0
+I 7 node_col 5
+I 7 node_end_line 4
+I 7 node_end_col 29
 N 7 ArgumentsNode
+I 8 node_line 4
+I 8 node_file 0
+I 8 node_col 5
+I 8 node_end_line 4
+I 8 node_end_col 29
 N 8 InterpolatedStringNode
+I 9 node_line 4
+I 9 node_file 0
+I 9 node_col 6
+I 9 node_end_line 4
+I 9 node_end_col 17
 N 9 EmbeddedStatementsNode
+I 10 node_line 4
+I 10 node_file 0
+I 10 node_col 8
+I 10 node_end_line 4
+I 10 node_end_col 16
 N 10 StatementsNode
+I 11 node_line 4
+I 11 node_file 0
+I 11 node_col 8
+I 11 node_end_line 4
+I 11 node_end_col 16
 N 11 LocalVariableReadNode
 S 11 name greeting
 A 10 body 11
 R 9 statements 10
+I 12 node_line 4
+I 12 node_file 0
+I 12 node_col 17
+I 12 node_end_line 4
+I 12 node_end_col 20
 N 12 StringNode
 S 12 content 、
+I 12 fzl 1
+I 13 node_line 4
+I 13 node_file 0
+I 13 node_col 20
+I 13 node_end_line 4
+I 13 node_end_col 27
 N 13 EmbeddedStatementsNode
+I 14 node_line 4
+I 14 node_file 0
+I 14 node_col 22
+I 14 node_end_line 4
+I 14 node_end_col 26
 N 14 StatementsNode
+I 15 node_line 4
+I 15 node_file 0
+I 15 node_col 22
+I 15 node_end_line 4
+I 15 node_end_col 26
 N 15 LocalVariableReadNode
 S 15 name name
 A 14 body 15
 R 13 statements 14
+I 16 node_line 4
+I 16 node_file 0
+I 16 node_col 27
+I 16 node_end_line 4
+I 16 node_end_col 28
 N 16 StringNode
 S 16 content !
+I 16 fzl 1
 A 8 parts 9,12,13,16
+I 8 fzl 1
 A 7 arguments 8
 R 6 arguments 7
 R 6 block -1
+S 6 call_operator .
+I 17 node_line 5
+I 17 node_file 0
+I 17 node_col 0
+I 17 node_end_line 5
+I 17 node_end_col 20
 N 17 CallNode
 S 17 name puts
 R 17 receiver -1
+I 18 node_line 5
+I 18 node_file 0
+I 18 node_col 5
+I 18 node_end_line 5
+I 18 node_end_col 20
 N 18 ArgumentsNode
+I 19 node_line 5
+I 19 node_file 0
+I 19 node_col 5
+I 19 node_end_line 5
+I 19 node_end_col 20
 N 19 CallNode
 S 19 name length
+I 20 node_line 5
+I 20 node_file 0
+I 20 node_col 5
+I 20 node_end_line 5
+I 20 node_end_col 13
 N 20 LocalVariableReadNode
 S 20 name greeting
 R 19 receiver 20
 R 19 arguments -1
 R 19 block -1
+S 19 call_operator .
 A 18 arguments 19
 R 17 arguments 18
 R 17 block -1
+S 17 call_operator .
 A 1 body 2,4,6,17
 R 0 statements 1

@@ -12,6 +12,25 @@ function labelFor(node) {
   return rep ? `${node.type} "${rep[1]}"` : node.type;
 }
 
+function subtreeSize(index, id) {
+  const node = index.ast.nodes.get(id);
+  if (!node) return 0;
+  let n = 1;
+  for (const c of node.childIds) n += subtreeSize(index, c);
+  return n;
+}
+
+// A run of children spliced in from a builtins file (builtins/enumerable.rb
+// and friends) — shown as one line, not thousands of nodes.
+function splicedLeaf(index, file, ids) {
+  const leaf = document.createElement("div");
+  leaf.className = "ast-leaf ast-spliced dim";
+  const path = index.ast.files.get(file) ?? `file ${file}`;
+  const count = ids.reduce((n, id) => n + subtreeSize(index, id), 0);
+  leaf.textContent = `⋯ ${path.replace(/^.*\/(builtins\/)/, "$1")} から展開 (${count} ノード、非表示)`;
+  return leaf;
+}
+
 function renderNode(index, id) {
   const node = index.ast.nodes.get(id);
   if (!node) return null;
@@ -19,11 +38,11 @@ function renderNode(index, id) {
   label.className = "ast-node";
   label.dataset.nodeId = String(id);
   label.textContent = labelFor(node);
-  const type = index.byNode.get(id)?.type;
-  if (type) {
+  const rec = index.byNode.get(id)?.typeRec;
+  if (rec) {
     const t = document.createElement("span");
     t.className = "dim";
-    t.textContent = ` : ${type}`;
+    t.textContent = ` : ${rec.rbs ?? rec.type}`;
     label.appendChild(t);
   }
   if (node.childIds.length === 0) {
@@ -39,10 +58,24 @@ function renderNode(index, id) {
   details.appendChild(summary);
   const kids = document.createElement("div");
   kids.className = "ast-children";
+  let hidden = null; // { file, ids } — the current run of builtins-only children
+  const flush = () => {
+    if (hidden) kids.appendChild(splicedLeaf(index, hidden.file, hidden.ids));
+    hidden = null;
+  };
   for (const childId of node.childIds) {
+    if (!index.userSubtree.has(childId)) {
+      const file = index.ast.nodes.get(childId)?.file;
+      if (hidden && hidden.file !== file) flush();
+      if (!hidden) hidden = { file, ids: [] };
+      hidden.ids.push(childId);
+      continue;
+    }
+    flush();
     const el = renderNode(index, childId);
     if (el) kids.appendChild(el);
   }
+  flush();
   details.appendChild(kids);
   return details;
 }

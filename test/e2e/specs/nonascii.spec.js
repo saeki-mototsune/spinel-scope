@@ -7,7 +7,7 @@ test("non-ascii source keeps highlights aligned", async ({ page }) => {
   await expect(page.locator('.stage-chip[data-stage="run"]')).toHaveAttribute("data-state", "ok", { timeout: 45_000 });
   await expect(page.locator("#pane-output .pane-body")).toContainText("こんにちは、spinel!");
   // greeting = "こんにちは" の StringNode をホバー → Ruby 側で正確な範囲が光る
-  const strNode = page.locator('#pane-ast .ast-node', { hasText: 'StringNode' }).first();
+  const strNode = page.locator("#pane-ast .ast-node", { hasText: "StringNode" }).first();
   await strNode.hover();
   // The overlay highlights one .hl span per character (see highlight.js
   // highlightRange), so a multi-char range resolves to several elements —
