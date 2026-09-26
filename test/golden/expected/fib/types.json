@@ -1,0 +1,41 @@
+{
+  "types": [
+    {"file":"main.rb","line":1,"col":0,"end_line":9,"end_col":12,"kind":"StatementsNode","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":1,"col":0,"end_line":7,"end_col":3,"kind":"DefNode","name":"fib","type":"symbol","rbs":"Symbol","owner":"Object","signature":"(Integer) -> Integer"},
+    {"file":"main.rb","line":1,"col":8,"end_line":1,"end_col":9,"kind":"RequiredParameterNode","name":"n","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":2,"col":2,"end_line":6,"end_col":5,"kind":"StatementsNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":2,"col":2,"end_line":6,"end_col":5,"kind":"IfNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":2,"col":5,"end_line":2,"end_col":10,"kind":"CallNode","name":"<","type":"bool","rbs":"bool"},
+    {"file":"main.rb","line":2,"col":5,"end_line":2,"end_col":6,"kind":"LocalVariableReadNode","name":"n","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":2,"col":9,"end_line":2,"end_col":10,"kind":"IntegerNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":3,"col":4,"end_line":3,"end_col":5,"kind":"StatementsNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":3,"col":4,"end_line":3,"end_col":5,"kind":"LocalVariableReadNode","name":"n","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":4,"col":2,"end_line":6,"end_col":5,"kind":"ElseNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":5,"col":4,"end_line":5,"end_col":27,"kind":"StatementsNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":5,"col":4,"end_line":5,"end_col":27,"kind":"CallNode","name":"+","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":5,"col":4,"end_line":5,"end_col":14,"kind":"CallNode","name":"fib","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":5,"col":8,"end_line":5,"end_col":13,"kind":"CallNode","name":"-","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":5,"col":8,"end_line":5,"end_col":9,"kind":"LocalVariableReadNode","name":"n","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":5,"col":12,"end_line":5,"end_col":13,"kind":"IntegerNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":5,"col":17,"end_line":5,"end_col":27,"kind":"CallNode","name":"fib","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":5,"col":21,"end_line":5,"end_col":26,"kind":"CallNode","name":"-","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":5,"col":21,"end_line":5,"end_col":22,"kind":"LocalVariableReadNode","name":"n","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":5,"col":25,"end_line":5,"end_col":26,"kind":"IntegerNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":9,"col":0,"end_line":9,"end_col":12,"kind":"CallNode","name":"puts","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":9,"col":5,"end_line":9,"end_col":12,"kind":"CallNode","name":"fib","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":9,"col":9,"end_line":9,"end_col":11,"kind":"IntegerNode","type":"int","rbs":"Integer"}
+  ],
+  "diagnostics": [
+
+  ],
+  "codegen": [
+    {"file":"main.rb","line":2,"col":5,"end_line":2,"end_col":10,"kind":"CallNode","name":"<","dispatch":"direct"},
+    {"file":"main.rb","line":5,"col":4,"end_line":5,"end_col":27,"kind":"CallNode","name":"+","dispatch":"direct"},
+    {"file":"main.rb","line":5,"col":4,"end_line":5,"end_col":14,"kind":"CallNode","name":"fib","dispatch":"direct","callee":"fib"},
+    {"file":"main.rb","line":5,"col":8,"end_line":5,"end_col":13,"kind":"CallNode","name":"-","dispatch":"direct"},
+    {"file":"main.rb","line":5,"col":17,"end_line":5,"end_col":27,"kind":"CallNode","name":"fib","dispatch":"direct","callee":"fib"},
+    {"file":"main.rb","line":5,"col":21,"end_line":5,"end_col":26,"kind":"CallNode","name":"-","dispatch":"direct"},
+    {"file":"main.rb","line":9,"col":0,"end_line":9,"end_col":12,"kind":"CallNode","name":"puts","dispatch":"direct"},
+    {"file":"main.rb","line":9,"col":5,"end_line":9,"end_col":12,"kind":"CallNode","name":"fib","dispatch":"direct","callee":"fib"}
+  ]
+}

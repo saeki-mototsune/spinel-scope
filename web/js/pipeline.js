@@ -15,7 +15,7 @@ export function runPipeline(source, { onStage, onWasmDone }) {
     if (data.runId !== runId) return;
     Object.assign(artifacts, data.artifacts || {});
     onStage(data.stage, data);
-    if (data.stage === "codegen" && data.ok) {
+    if (data.stage === "compile" && data.ok) {
       // onWasmDone is async (it awaits the compile/run API call) and nothing
       // here awaits it. Without this catch, a throw inside it (e.g. from
       // buildIndex/showTree) becomes an unhandled promise rejection instead

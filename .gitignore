@@ -10,10 +10,11 @@ docs/
 
 # ビルド成果物(make -C toolchain で生成)
 web/wasm/
+toolchain/build/
 
 # ビルド時に取得する外部ツール(README のセットアップ手順で clone する)
 # spinel 本体は toolchain/spinel-src にサブモジュールとして固定
-toolchain/emsdk/
+toolchain/emsdk
 
 # 過去の技術検証(test/spike/)時の取得物。現在のビルドでは未使用
 toolchain/wasi-sdk/

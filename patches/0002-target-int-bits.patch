@@ -1,0 +1,55 @@
+Subject: [PATCH] SP_TARGET_INT_BITS: name the target's integer width at build time
+
+The target's sp_int width defaults to the compiler's own pointer width, and a
+32-bit compiler asks `cc` (popen) whether it should build with -m32. A
+compiler built for one width to emit C for another -- spinel as a wasm32
+(emscripten) module whose C is compiled by a 64-bit host cc -- can do
+neither: it would carry 32-bit literal limits into 64-bit C, and it cannot
+spawn a process. -DSP_TARGET_INT_BITS=64 names the target width at build
+time; the default is unchanged.
+
+diff --git a/src/main.c b/src/main.c
+index 41cbd0f3..410f10e1 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -727,6 +727,10 @@ int main(int argc, char **argv) {
+      builds the program: this binary's own unless --cc named another (a
+      32-bit build on a 64-bit host, `--cc='cc -m32'`), which is asked. */
+   extern int sp_target_int_bits;
++  /* the default target width, overridable at build time (see spinel_parse.c) */
++#ifndef SP_TARGET_INT_BITS
++#define SP_TARGET_INT_BITS ((int)(sizeof(void *) * 8))
++#endif
+   int target_i386 = 0;
+   /* wasm32-wasi: the C compiler is the wasi-sdk's clang unless --cc named
+      one, found through $WASI_SDK (or WASI_SDK_PATH, the sdk's own name for
+@@ -747,7 +751,7 @@ int main(int argc, char **argv) {
+      runtime archive beside itself, and the default `cc` there is 64-bit: the
+      program is told -m32, so the toolchain it saw is the one it uses. */
+   const char *cc_width_flag = "";
+-  if (!sp_streq(cc_cmd, "cc") || sizeof(void *) == 4) {
++  if (!sp_streq(cc_cmd, "cc") || SP_TARGET_INT_BITS == 32) {
+     char ccq[1024];
+     snprintf(ccq, sizeof ccq, "%s -E -dM -x c /dev/null 2>/dev/null", cc_cmd);
+     FILE *fp = popen(ccq, "r");
+diff --git a/src/spinel_parse.c b/src/spinel_parse.c
+index 0f33cf4b..ff162c6d 100644
+--- a/src/spinel_parse.c
++++ b/src/spinel_parse.c
+@@ -402,8 +402,14 @@ static void emit_node_array(int id, const char *field, pm_node_list_t *list) {
+    64-bit host, 32 on a 32-bit one, and whatever the C compiler named by
+    --cc builds for, which main.c asks it. A literal past that width is a
+    Bignum on the target, as it is in CRuby there, so it is carried as its
+-   decimal text (bigval) rather than truncated into the smaller sp_int. */
+-int sp_target_int_bits = (int)(sizeof(void *) * CHAR_BIT);
++   decimal text (bigval) rather than truncated into the smaller sp_int.
++   A compiler built for one width to emit C for another (the compiler as a
++   wasm32 module whose C is built on a 64-bit host) names the target's at
++   build time: -DSP_TARGET_INT_BITS=64. */
++#ifndef SP_TARGET_INT_BITS
++#define SP_TARGET_INT_BITS ((int)(sizeof(void *) * CHAR_BIT))
++#endif
++int sp_target_int_bits = SP_TARGET_INT_BITS;
+ static uint64_t pm_int_max_positive(void) { return sp_target_int_bits == 32 ? (uint64_t)INT32_MAX : (uint64_t)LLONG_MAX; }
+ static long long pm_int_value(pm_integer_t *integer) {
+   uint64_t val = 0;

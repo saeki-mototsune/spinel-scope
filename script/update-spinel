@@ -1,0 +1,99 @@
+#!/bin/bash
+# Bumps toolchain/spinel-src to an upstream spinel ref and checks that
+# spinel scope still works with it.
+#
+#   script/update-spinel [REF]
+#     REF  a release tag (YYYY.MM.DD), a commit SHA, or a branch
+#          (e.g. master = origin/master). Default: the newest release tag.
+#   make -C toolchain update-spinel REF=...   (same thing)
+#
+# Steps; stops at the first failure and leaves the submodule at REF so the
+# failure can be looked at:
+#   1. fetch upstream (with tags) and check REF out in the submodule
+#   2. git apply --check, then apply, each patches/*.patch in order
+#   3. native build (make deps + bin/spinel + runtime) -> toolchain/spinel-src
+#   4. wasm build from scratch -> web/wasm/
+#   5. regenerate test/golden/expected with the native spinel, then the
+#      golden test (wasm vs native, through to program output) and the unit
+#      tests
+# Afterwards: review `git diff test/golden/expected`, rebuild the sandbox
+# (server/sandbox/build.sh), run the API/E2E tests (README "テスト"), and
+# commit the submodule, patches/ and the expectations together.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+ROOT=$PWD
+SUB=toolchain/spinel-src
+REF=${1:-}
+
+step() { printf '\n==> %s\n' "$*"; }
+die() { printf 'update-spinel: %s\n' "$*" >&2; exit 1; }
+
+[ -e "$SUB/.git" ] || git submodule update --init "$SUB"
+
+step "fetch upstream"
+if [ "$(git -C "$SUB" rev-parse --is-shallow-repository)" = true ]; then
+  git -C "$SUB" fetch --unshallow --tags origin
+else
+  git -C "$SUB" fetch --tags origin
+fi
+current=$(git -C "$SUB" rev-parse HEAD)
+
+if [ -z "$REF" ]; then
+  REF=$(git -C "$SUB" tag -l '[0-9][0-9][0-9][0-9].[0-9][0-9].[0-9][0-9]*' --sort=-version:refname | head -n 1)
+  [ -n "$REF" ] || die "no release tag upstream; pass a REF"
+  if [ "$(git -C "$SUB" rev-parse "$REF^{commit}")" != "$current" ] \
+     && git -C "$SUB" merge-base --is-ancestor "$REF" "$current"; then
+    die "the pin ($(git -C "$SUB" describe --tags "$current" 2>/dev/null || echo "$current")) is already past the newest release $REF; pass a REF (e.g. master)"
+  fi
+fi
+# A branch name means upstream's branch (origin/<name>), never the stale local
+# branch a submodule clone keeps; otherwise a tag or a SHA.
+sha=$(git -C "$SUB" rev-parse --verify -q "refs/remotes/origin/$REF^{commit}" || git -C "$SUB" rev-parse --verify -q "$REF^{commit}") \
+  || die "unknown ref: $REF"
+echo "REF $REF = $sha ($(git -C "$SUB" describe --tags "$sha" 2>/dev/null || echo untagged))"
+
+step "check out $REF"
+# The working tree normally carries patches/ from the last build; take them
+# back out. Anything else there is somebody's work: stop rather than lose it.
+if [ -n "$(git -C "$SUB" status --porcelain --untracked-files=no)" ]; then
+  for p in $(ls -r patches/*.patch); do
+    git -C "$SUB" apply -R --check "$ROOT/$p" 2>/dev/null && git -C "$SUB" apply -R "$ROOT/$p"
+  done
+  [ -z "$(git -C "$SUB" status --porcelain --untracked-files=no)" ] \
+    || die "$SUB has local changes beyond patches/ (git -C $SUB status); commit or drop them first"
+fi
+git -C "$SUB" checkout -q --detach "$sha"
+
+step "apply patches/"
+for p in patches/*.patch; do
+  if ! git -C "$SUB" apply --check "$ROOT/$p"; then
+    die "$p no longer applies to $REF: refresh it (README「spinel へのパッチ」), or drop it if upstream fixed the issue"
+  fi
+  git -C "$SUB" apply "$ROOT/$p"
+  echo "applied $p"
+done
+
+step "native build"
+make -C toolchain native
+
+step "wasm build"
+make -C toolchain clean
+make -C toolchain -j"$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 4)"
+
+step "golden expectations (native spinel)"
+test/golden/gen-expected.sh
+
+step "golden test (wasm vs native) + unit tests"
+make -C toolchain golden
+node --test test/unit/*.mjs
+
+step "done: $SUB at $sha"
+git status --short -- "$SUB" patches test/golden/expected
+cat <<EOF
+
+Next:
+  git diff test/golden/expected       # what changed in spinel's output
+  server/sandbox/build.sh             # sandbox image with the new runtime
+  README「テスト」の API / E2E テスト
+  git add $SUB patches test/golden/expected && git commit
+EOF

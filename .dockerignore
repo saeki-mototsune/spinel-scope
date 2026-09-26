@@ -3,15 +3,19 @@
 .superpowers
 .kamal
 docs
-patches
 test
 toolchain/emsdk
+toolchain/build
 toolchain/clang-wasm
 toolchain/wasi-sdk
 toolchain/spinel-src/.git
 server/test
 web/wasm
+# host-built (macOS) artifacts; the native stage rebuilds them
 toolchain/spinel-src/build
+toolchain/spinel-src/bin
+toolchain/spinel-src/spinel
 toolchain/spinel-src/lib/*.a
 toolchain/spinel-src/lib/*.o
+toolchain/spinel-src/packages/*/*.o
 **/node_modules

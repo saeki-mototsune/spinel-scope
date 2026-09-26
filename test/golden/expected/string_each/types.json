@@ -1,0 +1,39 @@
+{
+  "types": [
+    {"file":"main.rb","line":1,"col":0,"end_line":5,"end_col":35,"kind":"StatementsNode","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":1,"col":0,"end_line":1,"end_col":38,"kind":"LocalVariableWriteNode","name":"words","type":"str_array","rbs":"Array[String]"},
+    {"file":"main.rb","line":1,"col":8,"end_line":1,"end_col":38,"kind":"ArrayNode","type":"str_array","rbs":"Array[String]"},
+    {"file":"main.rb","line":1,"col":9,"end_line":1,"end_col":17,"kind":"StringNode","type":"string","rbs":"String"},
+    {"file":"main.rb","line":1,"col":19,"end_line":1,"end_col":29,"kind":"StringNode","type":"string","rbs":"String"},
+    {"file":"main.rb","line":1,"col":31,"end_line":1,"end_col":37,"kind":"StringNode","type":"string","rbs":"String"},
+    {"file":"main.rb","line":2,"col":0,"end_line":4,"end_col":3,"kind":"CallNode","name":"each","type":"str_array","rbs":"Array[String]"},
+    {"file":"main.rb","line":2,"col":0,"end_line":2,"end_col":5,"kind":"LocalVariableReadNode","name":"words","type":"str_array","rbs":"Array[String]"},
+    {"file":"main.rb","line":2,"col":15,"end_line":2,"end_col":16,"kind":"RequiredParameterNode","name":"w__bp9","type":"string","rbs":"String"},
+    {"file":"main.rb","line":3,"col":2,"end_line":3,"end_col":15,"kind":"StatementsNode","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":3,"col":2,"end_line":3,"end_col":15,"kind":"CallNode","name":"puts","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":3,"col":7,"end_line":3,"end_col":15,"kind":"CallNode","name":"upcase","type":"string","rbs":"String"},
+    {"file":"main.rb","line":3,"col":7,"end_line":3,"end_col":8,"kind":"LocalVariableReadNode","name":"w__bp9","type":"string","rbs":"String"},
+    {"file":"main.rb","line":5,"col":0,"end_line":5,"end_col":35,"kind":"CallNode","name":"puts","type":"nil","rbs":"nil"},
+    {"file":"main.rb","line":5,"col":5,"end_line":5,"end_col":35,"kind":"CallNode","name":"sum","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":5,"col":5,"end_line":5,"end_col":31,"kind":"CallNode","name":"map","type":"int_array","rbs":"Array[Integer]"},
+    {"file":"main.rb","line":5,"col":5,"end_line":5,"end_col":10,"kind":"LocalVariableReadNode","name":"words","type":"str_array","rbs":"Array[String]"},
+    {"file":"main.rb","line":5,"col":18,"end_line":5,"end_col":19,"kind":"RequiredParameterNode","name":"w","type":"string","rbs":"String"},
+    {"file":"main.rb","line":5,"col":21,"end_line":5,"end_col":29,"kind":"StatementsNode","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":5,"col":21,"end_line":5,"end_col":29,"kind":"CallNode","name":"length","type":"int","rbs":"Integer"},
+    {"file":"main.rb","line":5,"col":21,"end_line":5,"end_col":22,"kind":"LocalVariableReadNode","name":"w","type":"string","rbs":"String"}
+  ],
+  "diagnostics": [
+
+  ],
+  "codegen": [
+    {"file":"main.rb","line":2,"col":0,"end_line":4,"end_col":3,"kind":"CallNode","name":"each","dispatch":"direct"},
+    {"file":"main.rb","line":2,"col":11,"end_line":4,"end_col":3,"kind":"BlockNode","inlined":true},
+    {"file":"main.rb","line":3,"col":2,"end_line":3,"end_col":15,"kind":"CallNode","name":"puts","dispatch":"direct"},
+    {"file":"main.rb","line":3,"col":7,"end_line":3,"end_col":15,"kind":"CallNode","name":"upcase","dispatch":"direct"},
+    {"file":"main.rb","line":5,"col":0,"end_line":5,"end_col":35,"kind":"CallNode","name":"puts","dispatch":"direct"},
+    {"file":"main.rb","line":5,"col":5,"end_line":5,"end_col":35,"kind":"CallNode","name":"sum","dispatch":"direct"},
+    {"file":"main.rb","line":5,"col":5,"end_line":5,"end_col":31,"kind":"CallNode","name":"map","dispatch":"direct"},
+    {"file":"main.rb","line":5,"col":15,"end_line":5,"end_col":31,"kind":"BlockNode","inlined":true},
+    {"file":"main.rb","line":5,"col":21,"end_line":5,"end_col":29,"kind":"CallNode","name":"length","dispatch":"direct"}
+  ]
+}

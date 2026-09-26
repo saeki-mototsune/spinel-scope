@@ -60,9 +60,16 @@ body { display: flex; flex-direction: column; height: 100vh; }
 #pane-ast .ast-leaf { padding-left: 28px; }
 #pane-ast .ast-node { border-radius: 2px; padding: 0 2px; }
 #pane-ast .pane-body { padding: 6px 4px; }
-.ir-section { padding: 6px 10px 2px; }
-.ir-method, .ir-ivar, .ir-ndtype { padding: 1px 10px 1px 18px; border-radius: 3px; }
-.ir-method { background: #7c3aed12; margin: 2px 8px; }
-#pane-ir details { padding: 4px 10px; }
+#pane-ast .ast-spliced { font-style: italic; }
+.ty-section { padding: 6px 10px 2px; }
+.ty-method, .ty-ivar, .ty-node, .ty-diag { padding: 1px 10px 1px 18px; border-radius: 3px; }
+.ty-method { background: #7c3aed12; margin: 2px 8px; }
+.ty-class { margin: 2px 0; }
+.ty-class-head { padding: 1px 10px; color: var(--dim); }
+.ty-class .ty-method, .ty-class .ty-ivar { margin-left: 18px; }
+.ty-badge { margin-left: 6px; padding: 0 5px; border-radius: 4px; font-size: 10px; background: #f59e0b33; }
+.ty-diag-error { color: var(--fail); }
+.ty-diag-warning { color: #b45309; }
+#pane-types details { padding: 4px 10px; }
 .c-line { padding: 0 10px; }
 .c-line.hl { background: var(--hl); }

@@ -1,26 +1,92 @@
 ROOT 0
+SOURCE_FILE main.rb
+FILE 0 main.rb
+I 0 node_line 1
+I 0 node_file 0
+I 0 node_col 0
+I 0 node_end_line 5
+I 0 node_end_col 35
 N 0 ProgramNode
+I 1 node_line 1
+I 1 node_file 0
+I 1 node_col 0
+I 1 node_end_line 5
+I 1 node_end_col 35
 N 1 StatementsNode
+I 2 node_line 1
+I 2 node_file 0
+I 2 node_col 0
+I 2 node_end_line 1
+I 2 node_end_col 38
 N 2 LocalVariableWriteNode
 S 2 name words
+I 3 node_line 1
+I 3 node_file 0
+I 3 node_col 8
+I 3 node_end_line 1
+I 3 node_end_col 38
 N 3 ArrayNode
+I 4 node_line 1
+I 4 node_file 0
+I 4 node_col 9
+I 4 node_end_line 1
+I 4 node_end_col 17
 N 4 StringNode
 S 4 content spinel
+I 4 fzl 1
+I 5 node_line 1
+I 5 node_file 0
+I 5 node_col 19
+I 5 node_end_line 1
+I 5 node_end_col 29
 N 5 StringNode
 S 5 content compiles
+I 5 fzl 1
+I 6 node_line 1
+I 6 node_file 0
+I 6 node_col 31
+I 6 node_end_line 1
+I 6 node_end_col 37
 N 6 StringNode
 S 6 content ruby
+I 6 fzl 1
 A 3 elements 4,5,6
 R 2 value 3
+I 7 node_line 2
+I 7 node_file 0
+I 7 node_col 0
+I 7 node_end_line 4
+I 7 node_end_col 3
 N 7 CallNode
 S 7 name each
+I 8 node_line 2
+I 8 node_file 0
+I 8 node_col 0
+I 8 node_end_line 2
+I 8 node_end_col 5
 N 8 LocalVariableReadNode
 S 8 name words
 R 7 receiver 8
 R 7 arguments -1
+I 9 node_line 2
+I 9 node_file 0
+I 9 node_col 11
+I 9 node_end_line 4
+I 9 node_end_col 3
 N 9 BlockNode
+S 9 locals w
 N 10 BlockParametersNode
+I 11 node_line 2
+I 11 node_file 0
+I 11 node_col 15
+I 11 node_end_line 2
+I 11 node_end_col 16
 N 11 ParametersNode
+I 12 node_line 2
+I 12 node_file 0
+I 12 node_col 15
+I 12 node_end_line 2
+I 12 node_end_col 16
 N 12 RequiredParameterNode
 S 12 name w
 A 11 requireds 12
@@ -29,39 +95,108 @@ A 11 keywords
 A 11 posts 
 R 10 parameters 11
 R 9 parameters 10
+I 13 node_line 3
+I 13 node_file 0
+I 13 node_col 2
+I 13 node_end_line 3
+I 13 node_end_col 15
 N 13 StatementsNode
+I 14 node_line 3
+I 14 node_file 0
+I 14 node_col 2
+I 14 node_end_line 3
+I 14 node_end_col 15
 N 14 CallNode
 S 14 name puts
 R 14 receiver -1
+I 15 node_line 3
+I 15 node_file 0
+I 15 node_col 7
+I 15 node_end_line 3
+I 15 node_end_col 15
 N 15 ArgumentsNode
+I 16 node_line 3
+I 16 node_file 0
+I 16 node_col 7
+I 16 node_end_line 3
+I 16 node_end_col 15
 N 16 CallNode
 S 16 name upcase
+I 17 node_line 3
+I 17 node_file 0
+I 17 node_col 7
+I 17 node_end_line 3
+I 17 node_end_col 8
 N 17 LocalVariableReadNode
 S 17 name w
 R 16 receiver 17
 R 16 arguments -1
 R 16 block -1
+S 16 call_operator .
 A 15 arguments 16
 R 14 arguments 15
 R 14 block -1
+S 14 call_operator .
 A 13 body 14
 R 9 body 13
 R 7 block 9
+S 7 call_operator .
+I 18 node_line 5
+I 18 node_file 0
+I 18 node_col 0
+I 18 node_end_line 5
+I 18 node_end_col 35
 N 18 CallNode
 S 18 name puts
 R 18 receiver -1
+I 19 node_line 5
+I 19 node_file 0
+I 19 node_col 5
+I 19 node_end_line 5
+I 19 node_end_col 35
 N 19 ArgumentsNode
+I 20 node_line 5
+I 20 node_file 0
+I 20 node_col 5
+I 20 node_end_line 5
+I 20 node_end_col 35
 N 20 CallNode
 S 20 name sum
+I 21 node_line 5
+I 21 node_file 0
+I 21 node_col 5
+I 21 node_end_line 5
+I 21 node_end_col 31
 N 21 CallNode
 S 21 name map
+I 22 node_line 5
+I 22 node_file 0
+I 22 node_col 5
+I 22 node_end_line 5
+I 22 node_end_col 10
 N 22 LocalVariableReadNode
 S 22 name words
 R 21 receiver 22
 R 21 arguments -1
+I 23 node_line 5
+I 23 node_file 0
+I 23 node_col 15
+I 23 node_end_line 5
+I 23 node_end_col 31
 N 23 BlockNode
+S 23 locals w
 N 24 BlockParametersNode
+I 25 node_line 5
+I 25 node_file 0
+I 25 node_col 18
+I 25 node_end_line 5
+I 25 node_end_col 19
 N 25 ParametersNode
+I 26 node_line 5
+I 26 node_file 0
+I 26 node_col 18
+I 26 node_end_line 5
+I 26 node_end_col 19
 N 26 RequiredParameterNode
 S 26 name w
 A 25 requireds 26
@@ -70,22 +205,41 @@ A 25 keywords
 A 25 posts 
 R 24 parameters 25
 R 23 parameters 24
+I 27 node_line 5
+I 27 node_file 0
+I 27 node_col 21
+I 27 node_end_line 5
+I 27 node_end_col 29
 N 27 StatementsNode
+I 28 node_line 5
+I 28 node_file 0
+I 28 node_col 21
+I 28 node_end_line 5
+I 28 node_end_col 29
 N 28 CallNode
 S 28 name length
+I 29 node_line 5
+I 29 node_file 0
+I 29 node_col 21
+I 29 node_end_line 5
+I 29 node_end_col 22
 N 29 LocalVariableReadNode
 S 29 name w
 R 28 receiver 29
 R 28 arguments -1
 R 28 block -1
+S 28 call_operator .
 A 27 body 28
 R 23 body 27
 R 21 block 23
+S 21 call_operator .
 R 20 receiver 21
 R 20 arguments -1
 R 20 block -1
+S 20 call_operator .
 A 19 arguments 20
 R 18 arguments 19
 R 18 block -1
+S 18 call_operator .
 A 1 body 2,7,18
 R 0 statements 1
