@@ -119,23 +119,29 @@ export function parseCLineMap(cText, sourceName) {
 }
 
 // Finds each named C function's definition: its header line (not a
-// prototype) through the closing `}` at column 0.
+// prototype) through the closing `}` at column 0. A pure method is emitted as
+// `<name>__pure` (the body) followed by the `<name>` wrapper; its range starts
+// at the __pure header.
 export function findCFunctionRanges(cText, cNames) {
   const lines = cText.split("\n");
   const wanted = new Set(cNames);
   const found = new Map(); // cName -> [startLine, endLine]
-  // `static inline __attribute__((always_inline)) sp_int sp_C_m(...) {`:
+  const pureStart = new Map(); // cName -> header line of cName__pure
+  // `static inline SP_ALWAYS_INLINE sp_int sp_C_m(...) {`:
   // the name is any called-looking identifier on a line opening a body
   const header = /^[A-Za-z_][^;]*\{\s*$/;
   for (let i = 0; i < lines.length; i++) {
     if (!header.test(lines[i])) continue;
-    const name = [...lines[i].matchAll(/\b([A-Za-z_]\w*)\(/g)].map((m) => m[1]).find((n) => wanted.has(n));
+    const names = [...lines[i].matchAll(/\b([A-Za-z_]\w*)\(/g)].map((m) => m[1]);
+    const pure = names.map((n) => n.replace(/__pure$/, "")).find((n, k) => n !== names[k] && wanted.has(n));
+    if (pure && !pureStart.has(pure)) pureStart.set(pure, i);
+    const name = names.find((n) => wanted.has(n));
     if (!name || found.has(name)) continue;
     let end = i;
     for (let j = i + 1; j < lines.length; j++) {
       if (lines[j] === "}") { end = j; break; }
     }
-    found.set(name, [i, end]);
+    found.set(name, [pureStart.get(name) ?? i, end]);
   }
   return found;
 }

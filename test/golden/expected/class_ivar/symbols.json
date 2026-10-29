@@ -8,12 +8,20 @@
     {"c":"sp___enumw_inject0","ruby":"__enumw_inject0","kind":"toplevel","file":"<builtins>/enumerator.rb","line":45},
     {"c":"sp___enumw_inject1","ruby":"__enumw_inject1","kind":"toplevel","file":"<builtins>/enumerator.rb","line":59},
     {"c":"sp___enumw_with_index","ruby":"__enumw_with_index","kind":"toplevel","file":"<builtins>/enumerator.rb","line":65},
-    {"c":"sp___enumw_each_slice","ruby":"__enumw_each_slice","kind":"toplevel","file":"<builtins>/enumerator.rb","line":74},
-    {"c":"sp___enumw_each_cons","ruby":"__enumw_each_cons","kind":"toplevel","file":"<builtins>/enumerator.rb","line":87},
-    {"c":"sp___enumw_each_entry","ruby":"__enumw_each_entry","kind":"toplevel","file":"<builtins>/enumerator.rb","line":97},
+    {"c":"sp___enumw_str_chars_with_index","ruby":"__enumw_str_chars_with_index","kind":"toplevel","file":"<builtins>/enumerator.rb","line":78},
+    {"c":"sp___enumw_str_lines_with_index","ruby":"__enumw_str_lines_with_index","kind":"toplevel","file":"<builtins>/enumerator.rb","line":87},
+    {"c":"sp___enumw_str_bytes_with_index","ruby":"__enumw_str_bytes_with_index","kind":"toplevel","file":"<builtins>/enumerator.rb","line":96},
+    {"c":"sp___enumw_str_codepoints_with_index","ruby":"__enumw_str_codepoints_with_index","kind":"toplevel","file":"<builtins>/enumerator.rb","line":105},
+    {"c":"sp___enumw_each_slice","ruby":"__enumw_each_slice","kind":"toplevel","file":"<builtins>/enumerator.rb","line":114},
+    {"c":"sp___enumw_each_cons","ruby":"__enumw_each_cons","kind":"toplevel","file":"<builtins>/enumerator.rb","line":127},
+    {"c":"sp___enumw_each_entry","ruby":"__enumw_each_entry","kind":"toplevel","file":"<builtins>/enumerator.rb","line":137},
     {"c":"sp_Counter_initialize","ruby":"Counter#initialize","kind":"imeth","file":"main.rb","line":2},
     {"c":"sp_Counter_increment","ruby":"Counter#increment","kind":"imeth","file":"main.rb","line":6},
     {"c":"sp_Counter_count","ruby":"Counter#count","kind":"imeth","file":"main.rb","line":10},
-    {"c":"sp___enum_count__1954","ruby":"__enum_count__1954","kind":"toplevel","file":"<builtins>/enumerable.rb","line":301}
+    {"c":"sp___enum___no_false__0","ruby":"__enum___no_false__0","kind":"toplevel","file":"<builtins>/enumerable.rb","line":600},
+    {"c":"sp___enum___no_false__1","ruby":"__enum___no_false__1","kind":"toplevel","file":"<builtins>/enumerable.rb","line":600},
+    {"c":"sp___enum___no_false__2","ruby":"__enum___no_false__2","kind":"toplevel","file":"<builtins>/enumerable.rb","line":600},
+    {"c":"sp___enum___no_false__3","ruby":"__enum___no_false__3","kind":"toplevel","file":"<builtins>/enumerable.rb","line":600},
+    {"c":"sp___enum_count__0","ruby":"__enum_count__0","kind":"toplevel","file":"<builtins>/enumerable.rb","line":304}
   ]
 }

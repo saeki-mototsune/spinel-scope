@@ -3,7 +3,7 @@
 # one emscripten module, run in the browser's Worker.
 #
 # Prereqs: toolchain/spinel-src submodule initialized, patches/ applied and
-# `make deps` run in it (vendor/prism). toolchain/emsdk installed, or pass
+# `make deps` run in it (vendor/prism, vendor/rbs). toolchain/emsdk installed, or pass
 # EMCC=emcc with emsdk on PATH.
 #
 #   make                 build web/wasm/
@@ -16,9 +16,15 @@ OUT       = ../web/wasm
 OBJ       = build/wasm
 PRISM_DIR = $(SRC)/vendor/prism
 PRISM_SRCS = $(wildcard $(PRISM_DIR)/src/*.c) $(wildcard $(PRISM_DIR)/src/util/*.c)
+# The rbs C parser the compiler reads inline RBS comments with, as upstream
+# links it when vendor/rbs is there (`make deps` fetches it).
+RBS_DIR   = $(SRC)/vendor/rbs
+RBS_SRCS  = $(wildcard $(RBS_DIR)/src/*.c) $(wildcard $(RBS_DIR)/src/util/*.c)
 # The compiler's own sources: every src/*.c (spinel_parse.c is the library
-# copy of the Prism walk, re_lit_check.c the seam to the regexp engine).
-SPINEL_SRCS = $(wildcard $(SRC)/src/*.c)
+# copy of the Prism walk, re_lit_check.c the seam to the regexp engine,
+# rbs_map.c the one to the rbs parser) except the ones spinel_parse.c
+# #includes.
+SPINEL_SRCS = $(filter-out $(addprefix $(SRC)/src/,inline_rbs.c sp_const_loop.c sp_macro.c),$(wildcard $(SRC)/src/*.c))
 # The regexp engine as upstream's Makefile links it into bin/spinel (RE_SRC).
 RE_SRCS   = $(addprefix $(SRC)/lib/regexp/,re_compile.c re_exec.c re_utf8.c unicase.c re_spinel.c)
 # Headers upstream's Makefile generates with shell only (no C compiler).
@@ -36,22 +42,31 @@ EMFLAGS   = -O2 -sMODULARIZE=1 -sEXPORT_ES6=1 -sALLOW_MEMORY_GROWTH=1 \
 EMBED     = --embed-file $(SRC)/builtins@/spinel/builtins
 
 PRISM_OBJS  = $(patsubst $(PRISM_DIR)/src/%.c,$(OBJ)/prism/%.o,$(PRISM_SRCS))
+RBS_OBJS    = $(patsubst $(RBS_DIR)/src/%.c,$(OBJ)/rbs/%.o,$(RBS_SRCS))
 SPINEL_OBJS = $(patsubst $(SRC)/src/%.c,$(OBJ)/src/%.o,$(SPINEL_SRCS))
 RE_OBJS     = $(patsubst $(SRC)/lib/regexp/%.c,$(OBJ)/regexp/%.o,$(RE_SRCS))
 
 all: $(OUT)/spinel.mjs
 
-$(OUT)/spinel.mjs: $(SPINEL_OBJS) $(RE_OBJS) $(PRISM_OBJS) $(wildcard $(SRC)/builtins/*.rb)
+$(OUT)/spinel.mjs: $(SPINEL_OBJS) $(RE_OBJS) $(PRISM_OBJS) $(RBS_OBJS) $(wildcard $(SRC)/builtins/*.rb)
 	@mkdir -p $(OUT)
-	$(EMCC) $(EMFLAGS) $(SPINEL_OBJS) $(RE_OBJS) $(PRISM_OBJS) -lm $(EMBED) -o $@
+	$(EMCC) $(EMFLAGS) $(SPINEL_OBJS) $(RE_OBJS) $(PRISM_OBJS) $(RBS_OBJS) -lm $(EMBED) -o $@
 
 $(OBJ)/prism/%.o: $(PRISM_DIR)/src/%.c
 	@mkdir -p $(dir $@)
 	$(EMCC) $(CFLAGS) -I$(PRISM_DIR)/include -I$(PRISM_DIR)/src -c $< -o $@
 
-$(OBJ)/src/spinel_parse.o: $(SRC)/src/spinel_parse.c
+$(OBJ)/rbs/%.o: $(RBS_DIR)/src/%.c
 	@mkdir -p $(dir $@)
-	$(EMCC) $(CFLAGS) -I$(PRISM_DIR)/include -c $< -o $@
+	$(EMCC) $(CFLAGS) -I$(RBS_DIR)/include -I$(RBS_DIR)/src -c $< -o $@
+
+$(OBJ)/src/spinel_parse.o: $(addprefix $(SRC)/src/,spinel_parse.c inline_rbs.c sp_const_loop.c sp_macro.c)
+	@mkdir -p $(dir $@)
+	$(EMCC) $(CFLAGS) -I$(PRISM_DIR)/include -DSPINEL_INLINE_RBS -I$(RBS_DIR)/include -c $< -o $@
+
+$(OBJ)/src/rbs_map.o: $(SRC)/src/rbs_map.c
+	@mkdir -p $(dir $@)
+	$(EMCC) $(CFLAGS) -I$(RBS_DIR)/include -c $< -o $@
 
 $(OBJ)/src/re_lit_check.o: $(SRC)/src/re_lit_check.c
 	@mkdir -p $(dir $@)
