@@ -81,7 +81,7 @@ test("a line spinel rewrote is left unmapped, the rest still maps", async ({ pag
   expect(await rubyHighlight(page)).toBe("x = 1");
 });
 
-// Regression for patches/0001: with builtins spliced ahead of the program,
+// Regression (fixed upstream, formerly patches/0001): with builtins spliced ahead of the program,
 // positions must still land on the right lines.
 test("class_ivar positions survive the spliced builtins", async ({ page }) => {
   await page.goto("/");

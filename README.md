@@ -111,7 +111,7 @@ golden の期待値(`test/golden/expected/`)はパッチ済みネイティブ sp
 
 ## spinel の更新
 
-spinel はサブモジュール `toolchain/spinel-src` で特定のコミットに固定している(現在は upstream master の `246b5cb4`、リリース `2026.09.12` の 1158 コミット後)。upstream は `YYYY.MM.DD` 形式のリリースタグを打つので、版上げは原則タグ単位で行う:
+spinel はサブモジュール `toolchain/spinel-src` で特定のコミットに固定している(現在はリリース `2026.10.25`)。upstream は `YYYY.MM.DD` 形式のリリースタグを打つので、版上げは原則タグ単位で行う:
 
 ```bash
 script/update-spinel 2026.10.03     # タグ / コミット SHA / ブランチ名(master)を指定
@@ -184,10 +184,9 @@ build/push し、VPS に pull してから app が切り替わる(pull 失敗は
 
 すべて [patches/](patches/) に集約されている(upstream 提案可能な内容を意識して最小に保つ。各パッチの先頭に理由を記載):
 
-1. **`0001-line-map-builtins-requires.patch`** — spinel がプログラムの先頭に自動挿入する `require "builtins/..."` 行を、行番号の対応表(ソース位置 → 元ファイルの行)が「ユーザーが書いた行」として数えてしまい、組み込みを展開したプログラムでは全ノードの行番号が展開ファイル数だけずれる(`--emit-types` / `--emit-symbol-map` / `#line` / エラーメッセージのすべて)。挿入した行数だけ対応表の開始を前にずらして直す。
-2. **`0002-target-int-bits.patch`** — spinel は生成先の整数幅を自身のポインタ幅(と `cc` への問い合わせ)で決めるため、wasm32 でビルドしたコンパイラは 32 ビット向けの C を生成してしまう(サーバーの cc は 64 ビット)。ビルド時に `-DSP_TARGET_INT_BITS=64` で生成先の幅を指定できるようにする(未指定時の挙動は不変)。
+1. **`0002-target-int-bits.patch`** — spinel は生成先の整数幅を自身のポインタ幅(と `cc` への問い合わせ)で決めるため、wasm32 でビルドしたコンパイラは 32 ビット向けの C を生成してしまう(サーバーの cc は 64 ビット)。ビルド時に `-DSP_TARGET_INT_BITS=64` で生成先の幅を指定できるようにする(未指定時の挙動は不変)。
 
-以前の版で必要だった位置サイドカー出力とランタイムの Emscripten 対応は不要になった(位置は upstream の `--dump-ast` / `--emit-types` が出し、生成プログラムはサーバーでネイティブ実行するためランタイムを WASM 化しない)。シンボルマップはコンパイラ内部の環境変数 `SPINEL_PROFILE_SYMBOL_MAP`(`--profile` が使うもの)で型情報と同じ 1 回のコンパイルから取り出している。
+以前の版で必要だった `0001-line-map-builtins-requires.patch`(自動挿入される `require "builtins/..."` 行で行番号がずれる問題)は upstream `2026.10.25` で修正されたため削除した。同じく位置サイドカー出力とランタイムの Emscripten 対応は不要になった(位置は upstream の `--dump-ast` / `--emit-types` が出し、生成プログラムはサーバーでネイティブ実行するためランタイムを WASM 化しない)。シンボルマップはコンパイラ内部の環境変数 `SPINEL_PROFILE_SYMBOL_MAP`(`--profile` が使うもの)で型情報と同じ 1 回のコンパイルから取り出している。
 
 ## 既知の制限
 

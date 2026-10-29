@@ -9,7 +9,7 @@
 # Makefile, and records the flags a generated program compiles with
 # (`spinel --print-build` -> build.env, sourced by the sandbox's entry.sh).
 # Same Debian as the sandbox, so libspinel_rt.a links with its gcc/glibc.
-# The context's spinel-src must have had `make deps` (vendor/prism).
+# The context's spinel-src must have had `make deps` (vendor/prism, vendor/rbs).
 FROM debian:12-slim AS native
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential \
     && rm -rf /var/lib/apt/lists/*

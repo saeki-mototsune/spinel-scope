@@ -51,7 +51,7 @@ test("parseTypes / parseSymbols read the JSON and survive a missing file", () =>
 
 test("parseCLineMap follows #line directives for the source file only", () => {
   const { lines, rubyLineOf, isDirective } = parseCLineMap(exp("fib", "out.c"), "main.rb");
-  const rec = lines.findIndex((l) => l.includes("sp_fib(sp_int_sub(lv_n, 1LL))"));
+  const rec = lines.findIndex((l) => l.includes("sp_fib__pure(sp_int_sub(lv_n, 1LL))"));
   assert.ok(rec > 0);
   assert.equal(rubyLineOf[rec], 5);
   const dir = lines.findIndex((l) => l.startsWith("#line "));
@@ -66,8 +66,12 @@ test("findCFunctionRanges finds a definition, not its prototype", () => {
   const lines = c.split("\n");
   const r = findCFunctionRanges(c, ["sp_fib"]).get("sp_fib");
   assert.ok(r, "sp_fib should be found in C");
-  assert.match(lines[r[0]], /sp_fib\(.*\{\s*$/);
+  assert.match(lines[r[0]], /sp_fib__pure\(.*\{\s*$/);
   assert.equal(lines[r[1]], "}");
+  // a pure method is split into <name>__pure (the body) and the <name>
+  // wrapper right after it: the range covers both
+  const wrapper = lines.findIndex((l) => /^static inline sp_int sp_fib\(.*\{\s*$/.test(l));
+  assert.ok(r[0] < wrapper && wrapper < r[1]);
 });
 
 test("byteToCharIndex handles multibyte text", () => {
@@ -120,12 +124,12 @@ test("buildIndex maps a toplevel method to its C function via the symbol map", (
   assert.equal(fib.cName, "sp_fib");
   assert.match(slice(f, fib.rubyRange), /^def fib\(n\)[\s\S]*end$/);
   const cLines = f.cText.split("\n");
-  assert.match(cLines[fib.cRange[0]], /sp_fib\(/);
+  assert.match(cLines[fib.cRange[0]], /sp_fib__pure\(/);
   assert.equal(cLines[fib.cRange[1]], "}");
   assert.equal(idx.byNode.get(fib.defId).typeRec.kind, "DefNode");
 });
 
-// Regression for patches/0001: spliced builtins (3.times pulls in
+// spliced builtins (3.times pulls in
 // enumerable.rb and enumerator.rb) must not shift the program's positions.
 test("buildIndex keeps class_ivar positions exact despite spliced builtins", () => {
   const f = fixture("class_ivar");
@@ -137,8 +141,8 @@ test("buildIndex keeps class_ivar positions exact despite spliced builtins", () 
   assert.ok(init.cRange, "sp_Counter_initialize should be found in C");
   const inc = idx.methods.get("Counter#increment");
   assert.equal(inc.signature, "() -> Integer");
-  // an always_inline method: `static inline __attribute__((always_inline)) ...`
-  assert.match(f.cText.split("\n")[inc.cRange[0]], /always_inline.*sp_Counter_increment\(/);
+  // an always_inline method: `static inline SP_ALWAYS_INLINE ...`
+  assert.match(f.cText.split("\n")[inc.cRange[0]], /SP_ALWAYS_INLINE.*sp_Counter_increment\(/);
   const ivar = idx.typeRecords.find((r) => r.kind === "InstanceVariableWriteNode");
   assert.equal(slice(f, ivar.range), "@count = start");
   // tree view: the root stays (it contains the program), builtins-only
